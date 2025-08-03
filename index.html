@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mantrix Learning Platform - Multi-Track Merge & Timeline Planning</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .card-hover:hover { transform: translateY(-2px); transition: transform 0.2s; }
+        .status-online { color: #10b981; }
+        .status-badge { background: linear-gradient(45deg, #10b981, #059669); }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Header -->
+    <header class="gradient-bg text-white shadow-lg">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <i class="fas fa-brain text-2xl"></i>
+                    <h1 class="text-2xl font-bold">Mantrix Learning Platform</h1>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <span class="status-badge text-xs px-3 py-1 rounded-full text-white">
+                        <i class="fas fa-circle status-online"></i> Backend Online
+                    </span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-6 py-8">
+        <!-- Hero Section -->
+        <div class="bg-white rounded-lg shadow-lg p-8 mb-8">
+            <div class="text-center">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">
+                    🎉 Multi-Track Merge & Timeline Planning System
+                </h2>
+                <p class="text-xl text-gray-600 mb-6">
+                    AI-Powered Learning Platform with Intelligent Roadmap Merging
+                </p>
+                <div class="flex justify-center space-x-4">
+                    <span class="bg-green-100 text-green-800 px-4 py-2 rounded-full text-sm font-medium">
+                        <i class="fas fa-check-circle"></i> Backend Running
+                    </span>
+                    <span class="bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm font-medium">
+                        <i class="fas fa-database"></i> PostgreSQL Connected
+                    </span>
+                    <span class="bg-purple-100 text-purple-800 px-4 py-2 rounded-full text-sm font-medium">
+                        <i class="fas fa-robot"></i> AI Integration Active
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Feature Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+            <!-- Multi-Track Merge -->
+            <div class="bg-white rounded-lg shadow-lg p-6 card-hover">
+                <div class="flex items-center mb-4">
+                    <div class="bg-purple-100 p-3 rounded-lg mr-4">
+                        <i class="fas fa-code-merge text-purple-600 text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800">Multi-Track Merge</h3>
+                </div>
+                <p class="text-gray-600 mb-4">
+                    Intelligent roadmap merging with branch deduplication and core video prioritization
+                </p>
+                <ul class="text-sm text-gray-500 space-y-1">
+                    <li><i class="fas fa-check text-green-500"></i> Branch deduplication</li>
+                    <li><i class="fas fa-check text-green-500"></i> Core video protection</li>
+                    <li><i class="fas fa-check text-green-500"></i> Efficiency calculations</li>
+                </ul>
+            </div>
+
+            <!-- Timeline Planning -->
+            <div class="bg-white rounded-lg shadow-lg p-6 card-hover">
+                <div class="flex items-center mb-4">
+                    <div class="bg-blue-100 p-3 rounded-lg mr-4">
+                        <i class="fas fa-calendar-alt text-blue-600 text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800">Auto-Scheduling</h3>
+                </div>
+                <p class="text-gray-600 mb-4">
+                    30/60/90-day calendar generation with intelligent time management
+                </p>
+                <ul class="text-sm text-gray-500 space-y-1">
+                    <li><i class="fas fa-check text-green-500"></i> Daily study hour limits</li>
+                    <li><i class="fas fa-check text-green-500"></i> Weekend skip options</li>
+                    <li><i class="fas fa-check text-green-500"></i> Core content prioritization</li>
+                </ul>
+            </div>
+
+            <!-- AI Features -->
+            <div class="bg-white rounded-lg shadow-lg p-6 card-hover">
+                <div class="flex items-center mb-4">
+                    <div class="bg-green-100 p-3 rounded-lg mr-4">
+                        <i class="fas fa-brain text-green-600 text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800">AI-Powered</h3>
+                </div>
+                <p class="text-gray-600 mb-4">
+                    OpenAI GPT-4 integration for intelligent content generation
+                </p>
+                <ul class="text-sm text-gray-500 space-y-1">
+                    <li><i class="fas fa-check text-green-500"></i> Roadmap generation</li>
+                    <li><i class="fas fa-check text-green-500"></i> Resume building</li>
+                    <li><i class="fas fa-check text-green-500"></i> Learning recommendations</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- API Status Dashboard -->
+        <div class="bg-white rounded-lg shadow-lg p-8 mb-8">
+            <h3 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                <i class="fas fa-server mr-3 text-blue-600"></i>
+                Backend API Status
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" id="api-status">
+                <!-- API endpoints will be loaded here -->
+            </div>
+        </div>
+
+        <!-- Demo Actions -->
+        <div class="bg-white rounded-lg shadow-lg p-8">
+            <h3 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                <i class="fas fa-play-circle mr-3 text-purple-600"></i>
+                Interactive Demo
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Test API Endpoints</h4>
+                    <div class="space-y-3">
+                        <button onclick="testAPI('/health')" class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition">
+                            <i class="fas fa-heartbeat mr-2"></i> Test Health Check
+                        </button>
+                        <button onclick="testAPI('/api/v1/resume/health')" class="w-full bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition">
+                            <i class="fas fa-file-alt mr-2"></i> Test Resume Service
+                        </button>
+                        <button onclick="testAPI('/api/v1/progress/health')" class="w-full bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 transition">
+                            <i class="fas fa-chart-line mr-2"></i> Test Progress Service
+                        </button>
+                        <button onclick="openDocs()" class="w-full bg-orange-600 text-white py-2 px-4 rounded-lg hover:bg-orange-700 transition">
+                            <i class="fas fa-book mr-2"></i> View API Documentation
+                        </button>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">API Response</h4>
+                    <div id="api-response" class="bg-gray-100 p-4 rounded-lg h-48 overflow-y-auto">
+                        <p class="text-gray-500">Click a button to test API endpoints...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8 mt-12">
+        <div class="container mx-auto px-6 text-center">
+            <p class="mb-4">Mantrix Learning Platform - Multi-Track Merge & Timeline Planning System</p>
+            <div class="flex justify-center space-x-6">
+                <span class="flex items-center"><i class="fas fa-check-circle text-green-400 mr-2"></i> FastAPI Backend</span>
+                <span class="flex items-center"><i class="fas fa-check-circle text-green-400 mr-2"></i> PostgreSQL Database</span>
+                <span class="flex items-center"><i class="fas fa-check-circle text-green-400 mr-2"></i> OpenAI Integration</span>
+                <span class="flex items-center"><i class="fas fa-check-circle text-green-400 mr-2"></i> JWT Authentication</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // API testing functions
+        async function testAPI(endpoint) {
+            const responseDiv = document.getElementById('api-response');
+            responseDiv.innerHTML = '<p class="text-blue-600">Loading...</p>';
+            
+            try {
+                const response = await fetch(`http://localhost:8000${endpoint}`);
+                const data = await response.json();
+                
+                responseDiv.innerHTML = `
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="font-semibold">Status:</span>
+                            <span class="px-2 py-1 rounded text-sm ${response.ok ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}">
+                                ${response.status} ${response.statusText}
+                            </span>
+                        </div>
+                        <div class="font-semibold">Response:</div>
+                        <pre class="bg-gray-200 p-2 rounded text-xs overflow-x-auto">${JSON.stringify(data, null, 2)}</pre>
+                    </div>
+                `;
+            } catch (error) {
+                responseDiv.innerHTML = `
+                    <div class="text-red-600">
+                        <div class="font-semibold">Error:</div>
+                        <p>${error.message}</p>
+                        <p class="text-sm mt-2">Make sure the backend is running on port 8000</p>
+                    </div>
+                `;
+            }
+        }
+
+        function openDocs() {
+            window.open('http://localhost:8000/docs', '_blank');
+        }
+
+        // Load API status on page load
+        async function loadAPIStatus() {
+            const statusDiv = document.getElementById('api-status');
+            const endpoints = [
+                { name: 'Health Check', path: '/health', icon: 'heartbeat' },
+                { name: 'Resume Service', path: '/api/v1/resume/health', icon: 'file-alt' },
+                { name: 'Progress Service', path: '/api/v1/progress/health', icon: 'chart-line' },
+                { name: 'API Docs', path: '/docs', icon: 'book' }
+            ];
+
+            statusDiv.innerHTML = '';
+
+            for (const endpoint of endpoints) {
+                try {
+                    const response = await fetch(`http://localhost:8000${endpoint.path}`);
+                    const isHealthy = response.ok;
+                    
+                    statusDiv.innerHTML += `
+                        <div class="bg-${isHealthy ? 'green' : 'red'}-50 border border-${isHealthy ? 'green' : 'red'}-200 rounded-lg p-4">
+                            <div class="flex items-center">
+                                <i class="fas fa-${endpoint.icon} text-${isHealthy ? 'green' : 'red'}-600 mr-3"></i>
+                                <div>
+                                    <div class="font-semibold text-${isHealthy ? 'green' : 'red'}-800">${endpoint.name}</div>
+                                    <div class="text-sm text-${isHealthy ? 'green' : 'red'}-600">
+                                        ${isHealthy ? 'Online' : 'Offline'}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                } catch (error) {
+                    statusDiv.innerHTML += `
+                        <div class="bg-red-50 border border-red-200 rounded-lg p-4">
+                            <div class="flex items-center">
+                                <i class="fas fa-${endpoint.icon} text-red-600 mr-3"></i>
+                                <div>
+                                    <div class="font-semibold text-red-800">${endpoint.name}</div>
+                                    <div class="text-sm text-red-600">Connection Error</div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+        }
+
+        // Load status when page loads
+        document.addEventListener('DOMContentLoaded', loadAPIStatus);
+    </script>
+</body>
+</html>

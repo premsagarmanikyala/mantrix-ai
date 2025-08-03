@@ -8,7 +8,8 @@ import {
   Target,
   Clock,
   Award,
-  TrendingUp
+  TrendingUp,
+  Merge
 } from 'lucide-react';
 
 export default function Dashboard() {
@@ -21,6 +22,13 @@ export default function Dashboard() {
       icon: BookOpen,
       href: '/roadmap/create',
       color: 'bg-blue-500 hover:bg-blue-600',
+    },
+    {
+      title: 'Merge Roadmaps',
+      description: 'Combine multiple learning paths intelligently',
+      icon: Merge,
+      href: '/roadmap/merge',
+      color: 'bg-indigo-500 hover:bg-indigo-600',
     },
     {
       title: 'View Progress',

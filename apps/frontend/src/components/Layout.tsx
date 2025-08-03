@@ -5,6 +5,7 @@ import {
   FileText, 
   Lightbulb, 
   Map,
+  Merge,
   LogOut,
   User
 } from 'lucide-react'
@@ -18,6 +19,7 @@ interface LayoutProps {
 const navigation = [
   { name: 'Dashboard', href: '/', icon: Home },
   { name: 'Roadmap View', href: '/roadmap/view', icon: Map },
+  { name: 'Merge Roadmaps', href: '/roadmap/merge', icon: Merge },
   { name: 'Progress Tracker', href: '/progress', icon: BarChart3 },
   { name: 'Resume Builder', href: '/resume', icon: FileText },
   { name: 'Recommendations', href: '/recommendations', icon: Lightbulb },

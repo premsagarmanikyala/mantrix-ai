@@ -1,0 +1,97 @@
+ Multi-Track Merge & Timeline Planning System
+
+Implement functionality to allow users to combine multiple roadmaps (tracks) into one unified roadmap with intelligent scheduling options.
+
+🔧 Backend Instructions:
+Endpoint:
+POST /api/v1/roadmap/merge
+Input:
+
+json
+Copy
+Edit
+{
+  "roadmap_ids": ["rmp_001", "rmp_002"],
+  "schedule_mode": "none" | "auto" | "manual",
+  "calendar_view": true
+}
+Behavior:
+
+Identify shared branches between selected roadmaps and deduplicate
+
+Preserve all core videos from each roadmap
+
+Merge optional videos intelligently (based on title + tags)
+
+Recalculate total duration
+
+Maintain customized_from lineage
+
+Store final merged roadmap with proper user ownership
+
+If schedule_mode = "auto":
+
+Generate a 30/60/90-day calendar plan based on daily study hours
+
+If schedule_mode = "manual":
+
+Allow frontend to assign specific dates per branch/module
+
+Output Format:
+
+json
+Copy
+Edit
+{
+  "merged_roadmap": {
+    "id": "rmp_merged_xyz",
+    "title": "Full Stack + Data Analyst",
+    "branches": [...],
+    "total_duration": 14000,
+    "calendar": { "2025-08-05": [...], ... }
+  }
+}
+Save Result:
+
+New roadmap is persisted in PostgreSQL with merged_from and customized_from fields populated
+
+📱 Frontend Enhancements:
+On roadmap creation screen, allow user to:
+
+Select multiple tracks from dropdown/search
+
+Choose schedule mode (none, auto, manual)
+
+View calendar timeline (if enabled)
+
+Calendar view:
+
+Weekly/monthly grid with videos assigned per day
+
+Progress bars inside calendar blocks
+
+Color-coded by core/optional
+
+Editing:
+
+Drag-and-drop module reshuffling (optional, in later version)
+
+Toggle view: Tree | Calendar
+
+🧠 Smart Logic to Include:
+Prevent duplicate video titles across merged paths
+
+Prioritize core videos in early part of calendar
+
+Auto-suggest study blocks (e.g. 60 mins/day default unless user overrides)
+
+Ensure fallback if OpenAI quota is hit
+
+✅ Deliverables:
+Merged roadmap builder
+
+Schedule planner (optional)
+
+Full backend + frontend + visualization support
+
+Saved in user’s roadmap library

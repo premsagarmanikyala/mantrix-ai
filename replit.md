@@ -66,6 +66,13 @@ mantrix/
   - Interest-Based: Personalized paths from user preferences
   - User progress integration and skill profiling
   - Confidence scoring and actionable next steps
+- **Multi-Track Merge & Timeline Planning System**:
+  - Intelligent roadmap merging with branch deduplication
+  - Auto-scheduling with 30/60/90-day calendar generation
+  - Core video prioritization and content optimization
+  - Manual and automatic timeline assignment
+  - Efficiency statistics and duration calculations
+  - Merge preview with comprehensive analytics
 - RESTful API with automatic documentation
 - Modern React frontend with routing
 - Containerized deployment ready
@@ -146,6 +153,15 @@ mantrix/
   - ✅ **Built comprehensive user progress integration and skill profiling**
   - ✅ **Added fallback system for reliable recommendations without AI**
   - ✅ **Implemented confidence scoring and actionable next steps**
+- ✅ **MULTI-TRACK MERGE & TIMELINE PLANNING SYSTEM** (August 2025)
+  - ✅ **Implemented POST /api/v1/roadmap/merge for combining multiple roadmaps**
+  - ✅ **Built intelligent branch deduplication and content optimization**
+  - ✅ **Created auto-scheduling with 30/60/90-day calendar timeline generation**
+  - ✅ **Added merge preview with efficiency statistics and duration calculations**
+  - ✅ **Implemented calendar view with daily study hour distribution**
+  - ✅ **Built core video prioritization and optimal content sequencing**
+  - ✅ **Added merge lineage tracking with proper user ownership**
+  - ✅ **Created comprehensive frontend interface with multi-step wizard**
 - Fixed Python import structure to use absolute imports
 - Added email-validator dependency for Pydantic validation
 - Added PyJWT and bcrypt dependencies for authentication
@@ -175,6 +191,10 @@ mantrix/
 - `/api/v1/progress/health` - Progress service health check
 - `/api/v1/roadmap/recommend` - 🔐 **NEW: AI-powered learning path recommendations (gap/resume/interest modes)**
 - `/api/v1/roadmap/recommend/health` - Recommendation service health check
+- `/api/v1/roadmap/merge` - 🔐 **NEW: Multi-track roadmap merging with intelligent scheduling**
+- `/api/v1/roadmap/merge/preview` - 🔐 **NEW: Preview merge results with efficiency statistics**
+- `/api/v1/roadmap/mergeable` - 🔐 **NEW: Get user's roadmaps available for merging**
+- `/api/v1/roadmap/merge/health` - Merge service health check
 - `/docs` - Interactive API documentation
 
 ## Running the Project

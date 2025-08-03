@@ -52,7 +52,12 @@ mantrix/
   - Custom roadmap creation from existing branches
   - Customization tracking and lineage
   - Duration recalculation and validation
-- AI services for resume generation and roadmap planning
+- **Flexible resume builder with progress tracker integration**:
+  - Study Mode: Resume based on completed modules only
+  - Fast Mode: Full roadmap content resume generation
+  - Analyzer Mode: Resume vs job description analysis with ATS scoring
+  - Progress tracking and module completion monitoring
+  - AI-powered content generation and skills analysis
 - RESTful API with automatic documentation
 - Modern React frontend with routing
 - Containerized deployment ready
@@ -91,6 +96,16 @@ mantrix/
   - ✅ **Enhanced all data models with customization support**
   - ✅ **Implemented core video protection (prevents removal of essential content)**
   - ✅ **Added comprehensive testing with 100% feature coverage**
+- ✅ **RESUME BUILDER WITH PROGRESS TRACKER INTEGRATION** (August 2025)
+  - ✅ **Implemented three resume generation modes (study, fast, analyzer)**
+  - ✅ **Built progress tracking system for module completion**
+  - ✅ **Created AI-powered resume generation with OpenAI GPT-4 integration**
+  - ✅ **Added ATS-compatible resume analysis and scoring**
+  - ✅ **Implemented job description vs resume matching**
+  - ✅ **Built database persistence for resumes and progress data**
+  - ✅ **Integrated JWT authentication for secure user data management**
+  - ✅ **Added comprehensive error handling and fallback systems**
+  - ✅ **Created multi-mode resume storage and retrieval**
 - Fixed Python import structure to use absolute imports
 - Added email-validator dependency for Pydantic validation
 - Added PyJWT and bcrypt dependencies for authentication
@@ -105,11 +120,16 @@ mantrix/
 - `/api/v1/users` - User CRUD operations
 - `/api/v1/projects` - Project CRUD operations
 - `/api/v1/roadmap/generate` - 🔐 **Enhanced AI-powered roadmap generation with branches_library**
-- `/api/v1/roadmap/customize` - 🔐 **NEW: Create custom roadmaps from selected branches**
+- `/api/v1/roadmap/customize` - 🔐 **Create custom roadmaps from selected branches**
 - `/api/v1/roadmap/health` - Roadmap service health check
 - `/api/v1/roadmap/my-roadmaps` - 🔐 Get authenticated user's roadmaps (AI-generated + custom)
 - `/api/v1/roadmap/id/{roadmap_id}` - 🔐 Get/Delete specific roadmap by ID (user-owned only)
 - `/api/v1/project/{project_id}/roadmap/generate` - Project-specific roadmap generation
+- `/api/v1/resume/generate` - 🔐 **Multi-mode resume generation (study/fast/analyzer)**
+- `/api/v1/resume/my-resumes` - 🔐 **Get user's saved resumes with statistics**
+- `/api/v1/resume/progress/complete` - 🔐 **Mark learning modules as completed**
+- `/api/v1/resume/progress` - 🔐 **Get user's learning progress statistics**
+- `/api/v1/resume/health` - Resume service health check
 - `/docs` - Interactive API documentation
 
 ## Running the Project

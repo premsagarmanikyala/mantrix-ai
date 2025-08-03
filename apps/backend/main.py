@@ -8,7 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 import uvicorn
 
-from api.routes import api_router
+from api.routes import api_router, setup_routes
 from core.config import settings
 
 
@@ -38,8 +38,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Include API routes
-app.include_router(api_router, prefix="/api/v1")
+# Set up and include API routes
+setup_routes()
+app.include_router(api_router, prefix="/api")
 
 # Register auth routes separately for proper routing
 from api.auth import auth_router

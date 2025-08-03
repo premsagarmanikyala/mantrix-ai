@@ -1,0 +1,54 @@
+Resume Builder Modes + Progress Tracker Integration
+🎯 Goal
+Build a flexible resume builder tightly integrated with user progress on roadmaps, supporting three modes:
+•	Study Mode
+Resume updates automatically based on completed modules only. Encourages finishing lessons before resume entry.
+•	Fast Mode
+Resume generated instantly from the selected roadmap (including incomplete modules). Enables applying for jobs while studying. Editable final resume.
+•	Analyzer Mode
+Users upload an existing resume + job description. System provides an ATS-friendly score and suggests roadmap improvements.
+
+🛠️ What to Build
+1. Backend API Endpoints
+•	POST /api/v1/resume/generate
+Input: { user_id, mode: "study" | "fast" | "analyzer", roadmap_id?, completed_modules?, existing_resume?, job_description? }
+Output: { resume_text, score? }
+•	Logic:
+o	Study Mode
+Use completed_modules to build resume content from only finished lessons/branches.
+o	Fast Mode
+Use entire roadmap content regardless of completion.
+o	Analyzer Mode
+Parse uploaded resume + JD, score match, suggest missing roadmap modules.
+
+2. Data Model & Storage
+•	Track user progress: modules marked completed
+•	Store resumes per user per mode (draft/final)
+•	Store job descriptions for analyzer mode
+
+3. AI Integration
+•	Use GPT-4 prompt template to generate resume content from roadmap keywords, skills, and progress
+•	Use AI to parse and compare resume and JD for Analyzer Mode
+
+4. Tests
+•	Unit and integration tests covering resume generation and scoring
+•	Edge cases: no completed modules, empty roadmap, invalid resume/JD uploads
+
+📦 Folder Structure
+bash
+CopyEdit
+apps/backend/
+├── api/
+│   └── resume.py        # Resume builder endpoints
+├── services/
+│   └── resume_service.py # Logic for modes + AI interaction
+├── models/
+│   └── user_progress.py  # Tracks completed modules per user
+│   └── resume.py         # Stores generated resumes & job data
+
+✅ Summary:
+Implement flexible resume generation endpoint supporting three modes:
+Study (based on completed modules), Fast (full roadmap), Analyzer (resume+JD upload with scoring).
+Integrate GPT-4 to create or analyze resumes.
+Track user progress and persist resumes.
+Add unit and integration tests.

@@ -16,6 +16,7 @@ from services.user_service import UserService
 from services.project_service import ProjectService
 from services.roadmap_agent import roadmap_agent
 from api.roadmap import roadmap_router
+from api.resume import resume_router
 from api.auth import auth_router
 
 api_router = APIRouter()
@@ -143,3 +144,13 @@ async def generate_project_roadmap(project_id: int, db: Session = Depends(get_db
             status_code=500,
             detail=f"Failed to generate roadmap for project: {str(e)}"
         )
+
+
+def setup_routes():
+    """Set up all API routes."""
+    # Include all routers
+    api_router.include_router(auth_router)
+    api_router.include_router(roadmap_router, prefix="/v1")
+    api_router.include_router(resume_router, prefix="/v1")
+    
+    return api_router

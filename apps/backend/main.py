@@ -41,6 +41,10 @@ app.add_middleware(
 # Include API routes
 app.include_router(api_router, prefix="/api/v1")
 
+# Register auth routes separately for proper routing
+from api.auth import auth_router
+app.include_router(auth_router, prefix="/api")
+
 
 @app.get("/")
 async def root():

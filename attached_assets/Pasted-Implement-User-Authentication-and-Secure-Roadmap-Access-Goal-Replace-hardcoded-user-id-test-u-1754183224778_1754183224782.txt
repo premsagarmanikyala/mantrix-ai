@@ -1,0 +1,71 @@
+Implement User Authentication and Secure Roadmap Access
+🔐 Goal: Replace hardcoded user_id = "test_user" with real user accounts using authentication.
+Secure all roadmap access so each user only sees and modifies their own data.
+
+🛠️ What to Build
+1. Choose Auth Strategy
+Use Supabase Auth or basic JWT-based authentication (depending on what’s already set up or supported in Replit). You can decide the stack, but the minimum features must include:
+
+Signup
+
+Login
+
+Session token (JWT or Supabase access token)
+
+User ID that can be accessed in protected routes
+
+🔐 2. Backend Auth Setup
+Add POST /api/auth/signup: Accepts email and password, creates user.
+
+Add POST /api/auth/login: Accepts email and password, returns access_token.
+
+Add GET /api/auth/me: Returns current user info based on token.
+
+Add token-based middleware to decode and inject user_id on every authenticated request.
+
+🔐 3. Secure Roadmap Endpoints
+Modify existing roadmap routes to:
+
+Save roadmaps with the real user_id from token instead of "test_user".
+
+Restrict GET /api/v1/roadmap/{user_id} to return data only for the authenticated user.
+
+Add middleware or decorator for verifying token on:
+
+POST /api/roadmap/generate
+
+GET /api/v1/roadmap/...
+
+DELETE /api/v1/roadmap/...
+
+🧪 4. Tests
+Add tests for:
+
+Auth flow (signup/login)
+
+Token verification
+
+Roadmap ownership protection
+
+📦 Folder Structure (Example)
+bash
+Copy
+Edit
+apps/backend/
+├── api/
+│   └── auth.py         # New auth endpoints
+│   └── roadmap.py      # Now protected with auth
+├── services/
+│   └── auth_service.py # Logic for signup, login, token
+├── middleware/
+│   └── auth_guard.py   # Middleware to decode token and validate user
+🔑 Environment Variables (if needed)
+JWT_SECRET or Supabase SUPABASE_KEY
+
+Use os.environ[...] to access them securely
+
+✅ Summary for Replit AI
+🔧 Create a complete auth flow (signup/login/token verification)
+🔐 Replace "test_user" with the real authenticated user_id
+🔒 Secure all roadmap endpoints so only logged-in users can access or modify their own roadmaps
+🧪 Add basic tests and use middleware to protect endpoints

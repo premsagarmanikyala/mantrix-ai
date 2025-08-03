@@ -69,19 +69,30 @@ mantrix/
 - ✅ **Added GET /api/v1/roadmap/{user_id} endpoint for user roadmap retrieval**
 - ✅ **Added GET/DELETE /api/v1/roadmap/id/{roadmap_id} endpoints for specific roadmap operations**
 - ✅ **Tested full end-to-end functionality with database storage and retrieval**
+- ✅ **Implemented JWT-based user authentication system**
+- ✅ **Created AuthService with bcrypt password hashing and JWT token management**
+- ✅ **Added authentication middleware for protecting API endpoints**
+- ✅ **Replaced hardcoded "test_user" with real authenticated user IDs**
+- ✅ **Secured all roadmap endpoints with Bearer token authentication**
+- ✅ **Added user signup, login, and profile management endpoints**
+- ✅ **Updated users table with password_hash column for authentication**
 - Fixed Python import structure to use absolute imports
 - Added email-validator dependency for Pydantic validation
+- Added PyJWT and bcrypt dependencies for authentication
 - Configured all infrastructure files (Docker, nginx, CI/CD)
 
 ## API Endpoints
 - `/health` - Health check
+- `/api/auth/signup` - User registration with email and password
+- `/api/auth/login` - User authentication with JWT token response
+- `/api/auth/me` - Get current authenticated user information
+- `/api/auth/health` - Authentication service health check
 - `/api/v1/users` - User CRUD operations
 - `/api/v1/projects` - Project CRUD operations
-- `/api/v1/roadmap/generate` - AI-powered roadmap generation with database persistence
+- `/api/v1/roadmap/generate` - 🔐 AI-powered roadmap generation (authenticated)
 - `/api/v1/roadmap/health` - Roadmap service health check
-- `/api/v1/roadmap/{user_id}` - Get all roadmaps for a specific user
-- `/api/v1/roadmap/id/{roadmap_id}` - Get specific roadmap by ID
-- `/api/v1/roadmap/id/{roadmap_id}` - Delete roadmap by ID (DELETE)
+- `/api/v1/roadmap/my-roadmaps` - 🔐 Get authenticated user's roadmaps
+- `/api/v1/roadmap/id/{roadmap_id}` - 🔐 Get/Delete specific roadmap by ID (user-owned only)
 - `/api/v1/project/{project_id}/roadmap/generate` - Project-specific roadmap generation
 - `/docs` - Interactive API documentation
 

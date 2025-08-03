@@ -16,11 +16,13 @@ from services.user_service import UserService
 from services.project_service import ProjectService
 from services.roadmap_agent import roadmap_agent
 from api.roadmap import roadmap_router
+from api.auth import auth_router
 
 api_router = APIRouter()
 
-# Include roadmap router
-api_router.include_router(roadmap_router)
+# Include routers
+api_router.include_router(auth_router)  # Auth routes at /api/auth
+api_router.include_router(roadmap_router)  # Roadmap routes at /api/v1/roadmap
 
 # User routes
 @api_router.get("/users", response_model=List[UserResponse])

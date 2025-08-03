@@ -149,8 +149,11 @@ async def generate_project_roadmap(project_id: int, db: Session = Depends(get_db
 def setup_routes():
     """Set up all API routes."""
     # Include all routers
+    from api.progress import progress_router
+    
     api_router.include_router(auth_router)
     api_router.include_router(roadmap_router, prefix="/v1")
     api_router.include_router(resume_router, prefix="/v1")
+    api_router.include_router(progress_router, prefix="/v1")
     
     return api_router

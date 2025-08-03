@@ -223,3 +223,211 @@ class ProgressService:
             logger.error(f"Error initializing progress table: {str(e)}")
             db.rollback()
             return False
+
+    def complete_module(self, db: Session, user_id: str, roadmap_id: str, 
+                       branch_id: str, module_id: str, duration_completed: int):
+        """
+        Mark a module as completed with duplicate prevention.
+        Returns progress entry if successful, None if already completed.
+        """
+        from models.user_progress import UserProgressEntry
+        import uuid
+        
+        try:
+            # Initialize progress table if needed
+            self.initialize_progress_table(db)
+            
+            # Check if module already completed
+            check_query = text("""
+                SELECT id FROM user_progress 
+                WHERE user_id = :user_id 
+                AND roadmap_id = :roadmap_id 
+                AND branch_id = :branch_id 
+                AND module_id = :module_id
+            """)
+            
+            existing = db.execute(check_query, {
+                "user_id": user_id,
+                "roadmap_id": roadmap_id,
+                "branch_id": branch_id,
+                "module_id": module_id
+            }).fetchone()
+            
+            if existing:
+                logger.info(f"Module {module_id} already completed for user {user_id}")
+                return None
+            
+            # Insert new progress entry
+            progress_id = f"progress_{uuid.uuid4().hex[:8]}"
+            completed_at = datetime.utcnow()
+            
+            insert_query = text("""
+                INSERT INTO user_progress 
+                (id, user_id, roadmap_id, branch_id, module_id, completed_at, duration_completed)
+                VALUES (:id, :user_id, :roadmap_id, :branch_id, :module_id, :completed_at, :duration_completed)
+            """)
+            
+            db.execute(insert_query, {
+                "id": progress_id,
+                "user_id": user_id,
+                "roadmap_id": roadmap_id,
+                "branch_id": branch_id,
+                "module_id": module_id,
+                "completed_at": completed_at,
+                "duration_completed": duration_completed
+            })
+            
+            db.commit()
+            
+            logger.info(f"Marked module {module_id} as completed for user {user_id}")
+            
+            return UserProgressEntry(
+                id=progress_id,
+                user_id=user_id,
+                roadmap_id=roadmap_id,
+                branch_id=branch_id,
+                module_id=module_id,
+                completed_at=completed_at,
+                duration_completed=duration_completed
+            )
+            
+        except Exception as e:
+            logger.error(f"Error completing module: {str(e)}")
+            db.rollback()
+            return None
+
+    def validate_user_roadmap_access(self, db: Session, user_id: str, roadmap_id: str) -> bool:
+        """Validate that user has access to the specified roadmap."""
+        try:
+            # Check if roadmap exists and belongs to user
+            query = text("""
+                SELECT id FROM roadmaps 
+                WHERE id = :roadmap_id AND user_id = :user_id
+            """)
+            
+            result = db.execute(query, {
+                "roadmap_id": roadmap_id,
+                "user_id": user_id
+            }).fetchone()
+            
+            return result is not None
+            
+        except Exception as e:
+            logger.error(f"Error validating roadmap access: {str(e)}")
+            return False
+
+    def get_progress_summary(self, db: Session, user_id: str, roadmap_id: str):
+        """Generate comprehensive progress summary for a roadmap."""
+        from models.user_progress import ProgressSummaryResponse, BranchProgressSummary
+        
+        try:
+            # Initialize progress table if needed
+            self.initialize_progress_table(db)
+            
+            # Get roadmap data
+            roadmap_query = text("""
+                SELECT branches_data FROM roadmaps 
+                WHERE id = :roadmap_id AND user_id = :user_id
+            """)
+            
+            roadmap_result = db.execute(roadmap_query, {
+                "roadmap_id": roadmap_id,
+                "user_id": user_id
+            }).fetchone()
+            
+            if not roadmap_result:
+                logger.warning(f"Roadmap {roadmap_id} not found for user {user_id}")
+                return None
+            
+            # Parse roadmap structure
+            branches_data = roadmap_result[0]
+            if isinstance(branches_data, str):
+                import json
+                branches_data = json.loads(branches_data)
+            
+            # Calculate total modules and duration from roadmap
+            total_modules = 0
+            total_duration = 0
+            branch_totals = {}
+            
+            for branch in branches_data:
+                branch_id = branch["id"]
+                videos = branch.get("videos", [])
+                branch_module_count = len(videos)
+                branch_duration = sum(video.get("duration", 0) for video in videos)
+                
+                total_modules += branch_module_count
+                total_duration += branch_duration
+                
+                branch_totals[branch_id] = {
+                    "total_modules": branch_module_count,
+                    "total_duration": branch_duration,
+                    "name": branch.get("title", f"Branch {branch_id}")
+                }
+            
+            # Get completed progress
+            progress_query = text("""
+                SELECT branch_id, module_id, duration_completed, completed_at
+                FROM user_progress 
+                WHERE user_id = :user_id AND roadmap_id = :roadmap_id
+            """)
+            
+            progress_result = db.execute(progress_query, {
+                "user_id": user_id,
+                "roadmap_id": roadmap_id
+            }).fetchall()
+            
+            # Calculate completed stats
+            completed_modules = len(progress_result)
+            completed_duration = sum(row[2] for row in progress_result)
+            last_activity = max((row[3] for row in progress_result), default=None)
+            
+            # Calculate branch-level progress
+            branch_progress = {}
+            for row in progress_result:
+                branch_id = row[0]
+                if branch_id not in branch_progress:
+                    branch_progress[branch_id] = {
+                        "completed": 0,
+                        "duration_done": 0
+                    }
+                branch_progress[branch_id]["completed"] += 1
+                branch_progress[branch_id]["duration_done"] += row[2]
+            
+            # Build branch summaries
+            branches = []
+            for branch_id, totals in branch_totals.items():
+                progress = branch_progress.get(branch_id, {"completed": 0, "duration_done": 0})
+                
+                branch_progress_percent = 0.0
+                if totals["total_modules"] > 0:
+                    branch_progress_percent = (progress["completed"] / totals["total_modules"]) * 100
+                
+                branches.append(BranchProgressSummary(
+                    branch_id=branch_id,
+                    completed=progress["completed"],
+                    total=totals["total_modules"],
+                    duration_done=progress["duration_done"],
+                    duration_total=totals["total_duration"],
+                    progress_percent=round(branch_progress_percent, 1)
+                ))
+            
+            # Calculate overall progress percentage
+            progress_percent = 0.0
+            if total_modules > 0:
+                progress_percent = (completed_modules / total_modules) * 100
+            
+            return ProgressSummaryResponse(
+                roadmap_id=roadmap_id,
+                total_modules=total_modules,
+                completed_modules=completed_modules,
+                total_duration=total_duration,
+                completed_duration=completed_duration,
+                progress_percent=round(progress_percent, 1),
+                branches=branches,
+                last_activity=last_activity
+            )
+            
+        except Exception as e:
+            logger.error(f"Error generating progress summary: {str(e)}")
+            return None

@@ -1,0 +1,89 @@
+# Mantrix - Full-Stack Monorepo
+
+## Project Overview
+Mantrix is a comprehensive full-stack monorepo scaffolding with FastAPI backend and React TypeScript frontend, designed for scalable web application development.
+
+## Architecture
+- **Backend**: FastAPI (Python 3.11) with SQLAlchemy ORM
+- **Frontend**: React 18 with TypeScript, Tailwind CSS
+- **Database**: SQLite (configurable to PostgreSQL)
+- **Infrastructure**: Docker containerization with nginx reverse proxy
+- **CI/CD**: GitHub Actions pipeline
+
+## Project Structure
+```
+mantrix/
+├── apps/
+│   ├── backend/          # FastAPI Python backend
+│   │   ├── api/          # Route handlers
+│   │   ├── models/       # Pydantic schemas & DB models
+│   │   ├── core/         # Configuration & database setup
+│   │   ├── services/     # Business logic (AI, users, projects)
+│   │   ├── tests/        # Unit tests
+│   │   └── main.py       # FastAPI application entry point
+│   └── frontend/         # React TypeScript frontend
+│       ├── src/
+│       │   ├── components/
+│       │   ├── pages/
+│       │   └── lib/
+│       └── package.json
+├── infra/               # Docker & infrastructure
+└── .github/workflows/   # CI/CD pipelines
+```
+
+## Current Status
+- ✅ Complete monorepo structure implemented
+- ✅ FastAPI backend with SQLAlchemy models
+- ✅ React frontend with TypeScript and Tailwind CSS
+- ✅ Database tables created successfully (SQLite)
+- ✅ Docker infrastructure configured
+- ✅ GitHub Actions CI/CD pipeline
+- ✅ Comprehensive documentation
+
+## Key Features
+- User management system
+- Project management
+- AI services for resume generation and roadmap planning
+- RESTful API with automatic documentation
+- Modern React frontend with routing
+- Containerized deployment ready
+
+## Recent Changes
+- Fixed Python import structure to use absolute imports
+- Added email-validator dependency for Pydantic email validation
+- Created database tables successfully
+- Configured all infrastructure files (Docker, nginx, CI/CD)
+
+## API Endpoints
+- `/health` - Health check
+- `/api/v1/users` - User CRUD operations
+- `/api/v1/projects` - Project CRUD operations
+- `/docs` - Interactive API documentation
+
+## Running the Project
+
+### Local Development
+```bash
+# Backend
+cd apps/backend
+python main.py
+
+# Frontend
+cd apps/frontend
+npm install && npm run dev
+```
+
+### Docker
+```bash
+cd infra
+docker-compose up -d
+```
+
+## User Preferences
+*No specific user preferences recorded yet*
+
+## Technical Decisions
+- Using absolute imports in Python backend for better module resolution
+- SQLite as default database for development (easily configurable to PostgreSQL)
+- Monorepo structure for better code organization and sharing
+- Docker multi-stage builds for optimized production images

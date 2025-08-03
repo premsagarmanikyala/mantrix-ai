@@ -10,11 +10,17 @@ from models.schemas import (
     UserCreate, UserResponse, UserUpdate,
     ProjectCreate, ProjectResponse, ProjectUpdate
 )
+from models.roadmap import RoadmapGenerateRequest, RoadmapGenerateResponse
 from core.database import get_db
 from services.user_service import UserService
 from services.project_service import ProjectService
+from services.roadmap_agent import roadmap_agent
+from api.roadmap import roadmap_router
 
 api_router = APIRouter()
+
+# Include roadmap router
+api_router.include_router(roadmap_router)
 
 # User routes
 @api_router.get("/users", response_model=List[UserResponse])
@@ -112,8 +118,26 @@ async def generate_resume(user_id: int, db: Session = Depends(get_db)):
     return {"message": "Resume generation started", "user_id": user_id}
 
 
-@api_router.post("/roadmap/generate")
-async def generate_roadmap(project_id: int, db: Session = Depends(get_db)):
-    """Generate learning roadmap for project."""
-    # This would integrate with the roadmap engine service
-    return {"message": "Roadmap generation started", "project_id": project_id}
+@api_router.post("/project/{project_id}/roadmap/generate")
+async def generate_project_roadmap(project_id: int, db: Session = Depends(get_db)):
+    """Generate learning roadmap for a specific project."""
+    # Get project details
+    project = ProjectService.get_project_by_id(db, project_id)
+    if not project:
+        raise HTTPException(status_code=404, detail="Project not found")
+    
+    try:
+        # Use project title and description as input for roadmap generation
+        user_input = f"{project.title}. {project.description or ''}"
+        roadmaps = roadmap_agent.generate_roadmaps(user_input.strip())
+        
+        return {
+            "message": "Roadmap generation completed",
+            "project_id": project_id,
+            "roadmaps": [roadmap.dict() for roadmap in roadmaps]
+        }
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to generate roadmap for project: {str(e)}"
+        )

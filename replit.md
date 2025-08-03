@@ -44,6 +44,8 @@ mantrix/
 ## Key Features
 - User management system
 - Project management
+- AI-powered roadmap generation using OpenAI GPT-4 and LangChain
+- Intelligent fallback system for robust roadmap generation
 - AI services for resume generation and roadmap planning
 - RESTful API with automatic documentation
 - Modern React frontend with routing
@@ -55,6 +57,11 @@ mantrix/
 - ✅ Verified all database tables, relationships, and API endpoints working with PostgreSQL
 - ✅ Removed obsolete TypeScript database configuration file
 - ✅ Database environment variables configured (DATABASE_URL, PGPORT, PGUSER, etc.)
+- ✅ Implemented AI-powered roadmap generator using OpenAI GPT-4 and LangChain
+- ✅ Added robust fallback system for roadmap generation when AI API is unavailable
+- ✅ Created dedicated roadmap service module with comprehensive error handling
+- ✅ Updated roadmap data models to support seconds-based duration and proper structure
+- ✅ Added both standalone and project-specific roadmap generation endpoints
 - Fixed Python import structure to use absolute imports
 - Added email-validator dependency for Pydantic email validation
 - Configured all infrastructure files (Docker, nginx, CI/CD)
@@ -63,6 +70,9 @@ mantrix/
 - `/health` - Health check
 - `/api/v1/users` - User CRUD operations
 - `/api/v1/projects` - Project CRUD operations
+- `/api/v1/roadmap/generate` - AI-powered roadmap generation
+- `/api/v1/roadmap/health` - Roadmap service health check
+- `/api/v1/project/{project_id}/roadmap/generate` - Project-specific roadmap generation
 - `/docs` - Interactive API documentation
 
 ## Running the Project

@@ -10,20 +10,21 @@ class VideoModule(BaseModel):
     """Individual video module within a branch."""
     id: str = Field(..., description="Unique identifier for the video module")
     title: str = Field(..., description="Title of the video module")
-    duration: int = Field(..., description="Duration in minutes", ge=1)
+    duration: int = Field(..., description="Duration in seconds", ge=300, le=1800)
 
 
 class RoadmapBranch(BaseModel):
     """Branch of learning content within a roadmap."""
+    id: str = Field(..., description="Unique identifier for the branch")
     title: str = Field(..., description="Title of the learning branch")
-    modules: List[VideoModule] = Field(..., description="List of video modules in this branch")
+    videos: List[VideoModule] = Field(..., description="List of video modules in this branch")
 
 
 class RoadmapResponse(BaseModel):
     """Individual roadmap in the response."""
     id: str = Field(..., description="Unique identifier for the roadmap")
     title: str = Field(..., description="Title of the roadmap")
-    total_duration: int = Field(..., description="Total duration of all videos in minutes")
+    total_duration: int = Field(..., description="Total duration of all videos in seconds")
     branches: List[RoadmapBranch] = Field(..., description="Learning branches in the roadmap")
 
 

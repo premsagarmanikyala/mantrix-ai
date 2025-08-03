@@ -7,7 +7,7 @@ from pydantic import BaseModel, Field
 from typing import List, Dict, Any, Optional
 import logging
 
-from middleware.auth import get_current_user
+from middleware.auth_guard import get_current_user
 from services.merge_service import RoadmapMergeService
 
 logger = logging.getLogger(__name__)

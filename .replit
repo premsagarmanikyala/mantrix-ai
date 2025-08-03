@@ -6,3 +6,7 @@ packages = ["bash", "cargo", "libiconv", "libxcrypt", "postgresql", "rustc"]
 
 [agent]
 integrations = ["javascript_log_in_with_replit==1.0.0", "javascript_database==1.0.0", "javascript_openai==1.0.0"]
+
+[[ports]]
+localPort = 8000
+externalPort = 80

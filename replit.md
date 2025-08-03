@@ -62,16 +62,26 @@ mantrix/
 - ✅ Created dedicated roadmap service module with comprehensive error handling
 - ✅ Updated roadmap data models to support seconds-based duration and proper structure
 - ✅ Added both standalone and project-specific roadmap generation endpoints
+- ✅ **Added PostgreSQL roadmaps table for persistent storage**
+- ✅ **Implemented complete CRUD operations for roadmap management**
+- ✅ **Created SyncRoadmapService for database operations with JSON branch storage**
+- ✅ **Integrated database persistence into roadmap generation API**
+- ✅ **Added GET /api/v1/roadmap/{user_id} endpoint for user roadmap retrieval**
+- ✅ **Added GET/DELETE /api/v1/roadmap/id/{roadmap_id} endpoints for specific roadmap operations**
+- ✅ **Tested full end-to-end functionality with database storage and retrieval**
 - Fixed Python import structure to use absolute imports
-- Added email-validator dependency for Pydantic email validation
+- Added email-validator dependency for Pydantic validation
 - Configured all infrastructure files (Docker, nginx, CI/CD)
 
 ## API Endpoints
 - `/health` - Health check
 - `/api/v1/users` - User CRUD operations
 - `/api/v1/projects` - Project CRUD operations
-- `/api/v1/roadmap/generate` - AI-powered roadmap generation
+- `/api/v1/roadmap/generate` - AI-powered roadmap generation with database persistence
 - `/api/v1/roadmap/health` - Roadmap service health check
+- `/api/v1/roadmap/{user_id}` - Get all roadmaps for a specific user
+- `/api/v1/roadmap/id/{roadmap_id}` - Get specific roadmap by ID
+- `/api/v1/roadmap/id/{roadmap_id}` - Delete roadmap by ID (DELETE)
 - `/api/v1/project/{project_id}/roadmap/generate` - Project-specific roadmap generation
 - `/docs` - Interactive API documentation
 

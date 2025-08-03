@@ -2,7 +2,7 @@ modules = ["nodejs-20", "python-3.11"]
 
 [nix]
 channel = "stable-25_05"
-packages = ["bash", "cargo", "libiconv", "libxcrypt", "rustc"]
+packages = ["bash", "cargo", "libiconv", "libxcrypt", "postgresql", "rustc"]
 
 [agent]
 integrations = ["javascript_openai==1.0.0", "javascript_database==1.0.0"]

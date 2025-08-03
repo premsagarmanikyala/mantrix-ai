@@ -5,11 +5,14 @@ Roadmap generation API endpoints.
 import logging
 from typing import List
 
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, HTTPException, status, Depends
 from pydantic import ValidationError
+from sqlalchemy.orm import Session
 
 from models.roadmap import RoadmapGenerateRequest, RoadmapGenerateResponse, RoadmapResponse
 from services.roadmap_agent import roadmap_agent
+from services.sync_roadmap_service import SyncRoadmapService
+from core.database import get_db
 
 # Configure logging
 logger = logging.getLogger(__name__)
@@ -19,7 +22,10 @@ roadmap_router = APIRouter(prefix="/roadmap", tags=["roadmap"])
 
 
 @roadmap_router.post("/generate", response_model=RoadmapGenerateResponse)
-async def generate_roadmap(request: RoadmapGenerateRequest) -> RoadmapGenerateResponse:
+async def generate_roadmap(
+    request: RoadmapGenerateRequest,
+    db: Session = Depends(get_db)
+) -> RoadmapGenerateResponse:
     """
     Generate AI-powered learning roadmaps based on user input.
     
@@ -69,6 +75,15 @@ async def generate_roadmap(request: RoadmapGenerateRequest) -> RoadmapGenerateRe
                 detail="Failed to generate minimum required roadmaps"
             )
         
+        # Save roadmaps to database with test user ID
+        try:
+            user_id = "test_user"  # Using dummy user_id as requested
+            saved_ids = SyncRoadmapService.save_roadmaps(db, roadmaps, user_id)
+            logger.info(f"Saved roadmaps to database with IDs: {saved_ids}")
+        except Exception as save_error:
+            logger.error(f"Failed to save roadmaps to database: {str(save_error)}")
+            # Continue without failing the request - roadmaps are still generated
+        
         # Create response
         response = RoadmapGenerateResponse(
             roadmaps=roadmaps,
@@ -116,3 +131,136 @@ async def roadmap_health_check():
             "service": "roadmap-generator",
             "error": str(e)
         }
+
+
+@roadmap_router.get("/{user_id}", response_model=List[RoadmapResponse])
+async def get_user_roadmaps(
+    user_id: str,
+    limit: int = 50,
+    offset: int = 0,
+    db: Session = Depends(get_db)
+) -> List[RoadmapResponse]:
+    """
+    Retrieve all roadmaps for a specific user.
+    
+    Args:
+        user_id: User ID to fetch roadmaps for
+        limit: Maximum number of roadmaps to return (default: 50)
+        offset: Number of roadmaps to skip (default: 0)
+        db: Database session
+        
+    Returns:
+        List of roadmap responses
+        
+    Raises:
+        HTTPException: If database operation fails
+    """
+    try:
+        logger.info(f"Fetching roadmaps for user: {user_id}")
+        
+        roadmaps = SyncRoadmapService.get_roadmaps_by_user(
+            db=db,
+            user_id=user_id,
+            limit=limit,
+            offset=offset
+        )
+        
+        logger.info(f"Found {len(roadmaps)} roadmaps for user {user_id}")
+        return roadmaps
+        
+    except Exception as e:
+        logger.error(f"Error fetching roadmaps for user {user_id}: {str(e)}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to fetch roadmaps: {str(e)}"
+        )
+
+
+@roadmap_router.get("/id/{roadmap_id}", response_model=RoadmapResponse)
+async def get_roadmap_by_id(
+    roadmap_id: str,
+    user_id: str = None,
+    db: Session = Depends(get_db)
+) -> RoadmapResponse:
+    """
+    Retrieve a specific roadmap by ID.
+    
+    Args:
+        roadmap_id: Roadmap ID to fetch
+        user_id: Optional user ID for filtering
+        db: Database session
+        
+    Returns:
+        Roadmap response
+        
+    Raises:
+        HTTPException: If roadmap not found or database error
+    """
+    try:
+        roadmap = SyncRoadmapService.get_roadmap_by_id(
+            db=db,
+            roadmap_id=roadmap_id,
+            user_id=user_id
+        )
+        
+        if not roadmap:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Roadmap not found"
+            )
+        
+        return roadmap
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error fetching roadmap {roadmap_id}: {str(e)}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to fetch roadmap: {str(e)}"
+        )
+
+
+@roadmap_router.delete("/id/{roadmap_id}")
+async def delete_roadmap(
+    roadmap_id: str,
+    user_id: str = None,
+    db: Session = Depends(get_db)
+):
+    """
+    Delete a roadmap by ID.
+    
+    Args:
+        roadmap_id: Roadmap ID to delete
+        user_id: Optional user ID for filtering
+        db: Database session
+        
+    Returns:
+        Success message
+        
+    Raises:
+        HTTPException: If roadmap not found or database error
+    """
+    try:
+        success = SyncRoadmapService.delete_roadmap(
+            db=db,
+            roadmap_id=roadmap_id,
+            user_id=user_id
+        )
+        
+        if not success:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Roadmap not found"
+            )
+        
+        return {"message": "Roadmap deleted successfully"}
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error deleting roadmap {roadmap_id}: {str(e)}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to delete roadmap: {str(e)}"
+        )

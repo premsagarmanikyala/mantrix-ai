@@ -6,7 +6,7 @@ Mantrix is a comprehensive full-stack monorepo scaffolding with FastAPI backend 
 ## Architecture
 - **Backend**: FastAPI (Python 3.11) with SQLAlchemy ORM
 - **Frontend**: React 18 with TypeScript, Tailwind CSS
-- **Database**: SQLite (configurable to PostgreSQL)
+- **Database**: PostgreSQL (Neon database with psycopg2-binary driver)
 - **Infrastructure**: Docker containerization with nginx reverse proxy
 - **CI/CD**: GitHub Actions pipeline
 
@@ -35,7 +35,8 @@ mantrix/
 - ✅ Complete monorepo structure implemented
 - ✅ FastAPI backend with SQLAlchemy models
 - ✅ React frontend with TypeScript and Tailwind CSS
-- ✅ Database tables created successfully (SQLite)
+- ✅ Database tables created successfully (PostgreSQL)
+- ✅ PostgreSQL database migration completed with Neon
 - ✅ Docker infrastructure configured
 - ✅ GitHub Actions CI/CD pipeline
 - ✅ Comprehensive documentation
@@ -49,9 +50,13 @@ mantrix/
 - Containerized deployment ready
 
 ## Recent Changes
+- ✅ Successfully migrated from SQLite to PostgreSQL using Neon database
+- ✅ Updated database configuration to handle both SQLite and PostgreSQL connections
+- ✅ Verified all database tables, relationships, and API endpoints working with PostgreSQL
+- ✅ Removed obsolete TypeScript database configuration file
+- ✅ Database environment variables configured (DATABASE_URL, PGPORT, PGUSER, etc.)
 - Fixed Python import structure to use absolute imports
 - Added email-validator dependency for Pydantic email validation
-- Created database tables successfully
 - Configured all infrastructure files (Docker, nginx, CI/CD)
 
 ## API Endpoints
@@ -84,6 +89,8 @@ docker-compose up -d
 
 ## Technical Decisions
 - Using absolute imports in Python backend for better module resolution
-- SQLite as default database for development (easily configurable to PostgreSQL)
+- PostgreSQL as production database with Neon hosting for scalability and reliability
+- Dynamic database configuration supporting both SQLite (fallback) and PostgreSQL
 - Monorepo structure for better code organization and sharing
 - Docker multi-stage builds for optimized production images
+- psycopg2-binary driver for optimal PostgreSQL performance

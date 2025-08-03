@@ -2,6 +2,7 @@
 Configuration settings for the Mantrix application.
 """
 
+import os
 from pydantic_settings import BaseSettings
 from typing import List
 
@@ -21,7 +22,7 @@ class Settings(BaseSettings):
     ALLOWED_HOSTS: List[str] = ["http://localhost:3000", "http://localhost:5173", "*"]
     
     # Database settings
-    DATABASE_URL: str = "sqlite:///./mantrix.db"
+    DATABASE_URL: str = os.getenv("DATABASE_URL", "sqlite:///./mantrix.db")
     
     # Security settings
     SECRET_KEY: str = "your-secret-key-change-in-production"

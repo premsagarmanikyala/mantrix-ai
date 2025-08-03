@@ -3,3 +3,6 @@ modules = ["nodejs-20", "python-3.11"]
 [nix]
 channel = "stable-25_05"
 packages = ["cargo", "libiconv", "libxcrypt", "rustc"]
+
+[agent]
+integrations = ["javascript_database==1.0.0"]

@@ -1,22 +1,51 @@
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, Navigate } from 'react-router-dom'
+import { useAuth } from './hooks/useAuth'
 import Layout from './components/Layout'
-import Home from './pages/Home'
-import Users from './pages/Users'
-import Projects from './pages/Projects'
-import Resume from './pages/Resume'
-import Roadmap from './pages/Roadmap'
+import LoginForm from './components/Auth/LoginForm'
+import Dashboard from './pages/Dashboard'
+import RoadmapView from './pages/RoadmapView'
+import RoadmapCreate from './pages/RoadmapCreate'
+import ProgressTracker from './pages/ProgressTracker'
+import ResumeBuilder from './pages/ResumeBuilder'
+import RecommendationCenter from './pages/RecommendationCenter'
+import { Toaster } from 'react-hot-toast'
 
 function App() {
+  const { isAuthenticated, isLoading } = useAuth()
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
+      </div>
+    )
+  }
+
+  if (!isAuthenticated) {
+    return (
+      <>
+        <LoginForm />
+        <Toaster position="top-right" />
+      </>
+    )
+  }
+
   return (
-    <Layout>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/users" element={<Users />} />
-        <Route path="/projects" element={<Projects />} />
-        <Route path="/resume" element={<Resume />} />
-        <Route path="/roadmap" element={<Roadmap />} />
-      </Routes>
-    </Layout>
+    <>
+      <Layout>
+        <Routes>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/dashboard" element={<Navigate to="/" replace />} />
+          <Route path="/roadmap/view" element={<RoadmapView />} />
+          <Route path="/roadmap/create" element={<RoadmapCreate />} />
+          <Route path="/progress" element={<ProgressTracker />} />
+          <Route path="/resume" element={<ResumeBuilder />} />
+          <Route path="/recommendations" element={<RecommendationCenter />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </Layout>
+      <Toaster position="top-right" />
+    </>
   )
 }
 

@@ -42,10 +42,16 @@ mantrix/
 - ✅ Comprehensive documentation
 
 ## Key Features
-- User management system
+- User management system with JWT authentication
 - Project management
 - AI-powered roadmap generation using OpenAI GPT-4 and LangChain
 - Intelligent fallback system for robust roadmap generation
+- **Advanced roadmap customization features**:
+  - Branches library with de-duplicated content
+  - Core video identification (essential vs optional content)
+  - Custom roadmap creation from existing branches
+  - Customization tracking and lineage
+  - Duration recalculation and validation
 - AI services for resume generation and roadmap planning
 - RESTful API with automatic documentation
 - Modern React frontend with routing
@@ -76,6 +82,15 @@ mantrix/
 - ✅ **Secured all roadmap endpoints with Bearer token authentication**
 - ✅ **Added user signup, login, and profile management endpoints**
 - ✅ **Updated users table with password_hash column for authentication**
+- ✅ **ENHANCED ROADMAP CUSTOMIZATION FEATURES** (January 2025)
+  - ✅ **Added branches_library to generation response with de-duplicated branches**
+  - ✅ **Implemented is_core flag for videos (true=essential, false=optional)**
+  - ✅ **Created POST /api/v1/roadmap/customize endpoint for custom roadmaps**
+  - ✅ **Added customized_from tracking for roadmap lineage**
+  - ✅ **Built branch selection system with duration recalculation**
+  - ✅ **Enhanced all data models with customization support**
+  - ✅ **Implemented core video protection (prevents removal of essential content)**
+  - ✅ **Added comprehensive testing with 100% feature coverage**
 - Fixed Python import structure to use absolute imports
 - Added email-validator dependency for Pydantic validation
 - Added PyJWT and bcrypt dependencies for authentication
@@ -89,9 +104,10 @@ mantrix/
 - `/api/auth/health` - Authentication service health check
 - `/api/v1/users` - User CRUD operations
 - `/api/v1/projects` - Project CRUD operations
-- `/api/v1/roadmap/generate` - 🔐 AI-powered roadmap generation (authenticated)
+- `/api/v1/roadmap/generate` - 🔐 **Enhanced AI-powered roadmap generation with branches_library**
+- `/api/v1/roadmap/customize` - 🔐 **NEW: Create custom roadmaps from selected branches**
 - `/api/v1/roadmap/health` - Roadmap service health check
-- `/api/v1/roadmap/my-roadmaps` - 🔐 Get authenticated user's roadmaps
+- `/api/v1/roadmap/my-roadmaps` - 🔐 Get authenticated user's roadmaps (AI-generated + custom)
 - `/api/v1/roadmap/id/{roadmap_id}` - 🔐 Get/Delete specific roadmap by ID (user-owned only)
 - `/api/v1/project/{project_id}/roadmap/generate` - Project-specific roadmap generation
 - `/docs` - Interactive API documentation

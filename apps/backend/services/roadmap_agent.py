@@ -48,10 +48,13 @@ Each roadmap should include:
 - Each branch should contain 2 to 3 video modules, each with:
   - Title
   - Duration in seconds (between 300 and 1800)
+  - is_core: true for essential videos, false for optional/advanced videos
+
+Mark foundational and prerequisite videos as core=true. Advanced, specialized, or optional content should be core=false.
 
 Return valid JSON only. No explanations or extra text."""
 
-    def generate_roadmaps(self, user_input: str) -> List[RoadmapResponse]:
+    def generate_roadmaps(self, user_input: str) -> tuple[List[RoadmapResponse], List[RoadmapBranch]]:
         """
         Generate 2-3 structured learning roadmaps based on user input.
         
@@ -59,7 +62,7 @@ Return valid JSON only. No explanations or extra text."""
             user_input: The user's input describing what they want to learn
             
         Returns:
-            List of RoadmapResponse objects
+            Tuple of (List of RoadmapResponse objects, List of unique RoadmapBranch objects)
             
         Raises:
             Exception: If AI generation or parsing fails
@@ -90,8 +93,11 @@ Return valid JSON only. No explanations or extra text."""
             # Convert to Pydantic models
             roadmaps = self._convert_to_roadmap_models(roadmaps_data)
             
-            logger.info(f"Successfully generated {len(roadmaps)} roadmaps")
-            return roadmaps
+            # Generate branches library (de-duplicated branches)
+            branches_library = self._generate_branches_library(roadmaps)
+            
+            logger.info(f"Successfully generated {len(roadmaps)} roadmaps with {len(branches_library)} unique branches")
+            return roadmaps, branches_library
             
         except Exception as e:
             logger.error(f"Error generating roadmaps: {str(e)}")
@@ -179,6 +185,7 @@ Return valid JSON only. No explanations or extra text."""
                         video_id = video_data.get('id', f"video_{uuid.uuid4().hex[:8]}")
                         video_title = video_data.get('title', f"Video {k+1}")
                         duration = video_data.get('duration', 600)  # Default 10 minutes
+                        is_core = video_data.get('is_core', False)  # Default to false
                         
                         # Ensure duration is within bounds
                         duration = max(300, min(1800, duration))
@@ -187,7 +194,8 @@ Return valid JSON only. No explanations or extra text."""
                         video = VideoModule(
                             id=video_id,
                             title=video_title,
-                            duration=duration
+                            duration=duration,
+                            is_core=is_core
                         )
                         videos.append(video)
                     
@@ -212,7 +220,7 @@ Return valid JSON only. No explanations or extra text."""
         
         return roadmaps
     
-    def _generate_fallback_roadmaps(self, user_input: str) -> List[RoadmapResponse]:
+    def _generate_fallback_roadmaps(self, user_input: str) -> tuple[List[RoadmapResponse], List[RoadmapBranch]]:
         """
         Generate fallback roadmaps when AI fails.
         This should only be used as a last resort.
@@ -235,15 +243,15 @@ Return valid JSON only. No explanations or extra text."""
                         id=f"branch_1_{uuid.uuid4().hex[:8]}",
                         title="Fundamentals",
                         videos=[
-                            VideoModule(id=f"video_1_{uuid.uuid4().hex[:8]}", title="Getting Started", duration=900),
-                            VideoModule(id=f"video_2_{uuid.uuid4().hex[:8]}", title="Core Concepts", duration=1200)
+                            VideoModule(id=f"video_1_{uuid.uuid4().hex[:8]}", title="Getting Started", duration=900, is_core=True),
+                            VideoModule(id=f"video_2_{uuid.uuid4().hex[:8]}", title="Core Concepts", duration=1200, is_core=True)
                         ]
                     ),
                     RoadmapBranch(
                         id=f"branch_2_{uuid.uuid4().hex[:8]}",
                         title="Practical Application",
                         videos=[
-                            VideoModule(id=f"video_3_{uuid.uuid4().hex[:8]}", title="Hands-on Practice", duration=1500)
+                            VideoModule(id=f"video_3_{uuid.uuid4().hex[:8]}", title="Hands-on Practice", duration=1500, is_core=False)
                         ]
                     )
                 ]
@@ -257,16 +265,61 @@ Return valid JSON only. No explanations or extra text."""
                         id=f"branch_3_{uuid.uuid4().hex[:8]}",
                         title="Advanced Topics",
                         videos=[
-                            VideoModule(id=f"video_4_{uuid.uuid4().hex[:8]}", title="Advanced Techniques", duration=1800),
-                            VideoModule(id=f"video_5_{uuid.uuid4().hex[:8]}", title="Best Practices", duration=1200),
-                            VideoModule(id=f"video_6_{uuid.uuid4().hex[:8]}", title="Case Studies", duration=1200)
+                            VideoModule(id=f"video_4_{uuid.uuid4().hex[:8]}", title="Advanced Techniques", duration=1800, is_core=False),
+                            VideoModule(id=f"video_5_{uuid.uuid4().hex[:8]}", title="Best Practices", duration=1200, is_core=True),
+                            VideoModule(id=f"video_6_{uuid.uuid4().hex[:8]}", title="Case Studies", duration=1200, is_core=False)
                         ]
                     )
                 ]
             )
         ]
         
-        return fallback_roadmaps
+        # Generate branches library from fallback roadmaps
+        branches_library = self._generate_branches_library(fallback_roadmaps)
+        
+        return fallback_roadmaps, branches_library
+    
+    def _generate_branches_library(self, roadmaps: List[RoadmapResponse]) -> List[RoadmapBranch]:
+        """
+        Generate a de-duplicated library of all branches across roadmaps.
+        
+        Args:
+            roadmaps: List of roadmap responses
+            
+        Returns:
+            De-duplicated list of unique branches
+        """
+        seen_branch_titles = set()
+        branches_library = []
+        
+        for roadmap in roadmaps:
+            for branch in roadmap.branches:
+                # Use title as deduplication key (could also use content similarity)
+                if branch.title not in seen_branch_titles:
+                    seen_branch_titles.add(branch.title)
+                    branches_library.append(branch)
+        
+        return branches_library
+    
+    def get_branches_by_ids(self, branch_ids: List[str], all_roadmaps: List[RoadmapResponse]) -> List[RoadmapBranch]:
+        """
+        Get branches by their IDs from a collection of roadmaps.
+        
+        Args:
+            branch_ids: List of branch IDs to retrieve
+            all_roadmaps: All available roadmaps to search through
+            
+        Returns:
+            List of matching branches
+        """
+        found_branches = []
+        
+        for roadmap in all_roadmaps:
+            for branch in roadmap.branches:
+                if branch.id in branch_ids:
+                    found_branches.append(branch)
+        
+        return found_branches
 
 
 # Global instance

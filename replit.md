@@ -58,6 +58,12 @@ mantrix/
   - Analyzer Mode: Resume vs job description analysis with ATS scoring
   - Progress tracking and module completion monitoring
   - AI-powered content generation and skills analysis
+- **AI-powered learning path recommendation system**:
+  - Gap Analysis: Skills needed for target job roles
+  - Resume Enhancement: Profile improvement suggestions
+  - Interest-Based: Personalized paths from user preferences
+  - User progress integration and skill profiling
+  - Confidence scoring and actionable next steps
 - RESTful API with automatic documentation
 - Modern React frontend with routing
 - Containerized deployment ready
@@ -115,6 +121,15 @@ mantrix/
   - ✅ **Built branch-level progress breakdowns and analytics**
   - ✅ **Added duration tracking and percentage calculations**
   - ✅ **Created real-time progress updates and summaries**
+- ✅ **AI-POWERED LEARNING PATH RECOMMENDATION SYSTEM** (August 2025)
+  - ✅ **Implemented POST /api/v1/roadmap/recommend with multi-mode analysis**
+  - ✅ **Built Gap Analysis mode for job description skills matching**
+  - ✅ **Created Resume Enhancement mode for profile improvement**
+  - ✅ **Added Interest-Based mode for personalized learning paths**
+  - ✅ **Integrated OpenAI GPT-4 for intelligent recommendation generation**
+  - ✅ **Built comprehensive user progress integration and skill profiling**
+  - ✅ **Added fallback system for reliable recommendations without AI**
+  - ✅ **Implemented confidence scoring and actionable next steps**
 - Fixed Python import structure to use absolute imports
 - Added email-validator dependency for Pydantic validation
 - Added PyJWT and bcrypt dependencies for authentication
@@ -142,6 +157,8 @@ mantrix/
 - `/api/v1/progress/complete` - 🔐 **NEW: Dedicated module completion tracking with duration**
 - `/api/v1/progress/summary` - 🔐 **NEW: Comprehensive progress analytics with branch breakdowns**
 - `/api/v1/progress/health` - Progress service health check
+- `/api/v1/roadmap/recommend` - 🔐 **NEW: AI-powered learning path recommendations (gap/resume/interest modes)**
+- `/api/v1/roadmap/recommend/health` - Recommendation service health check
 - `/docs` - Interactive API documentation
 
 ## Running the Project

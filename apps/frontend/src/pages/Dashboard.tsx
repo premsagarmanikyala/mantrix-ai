@@ -1,86 +1,86 @@
-import { useAuth } from '@/hooks/useAuth';
-import { Link } from 'react-router-dom';
-import { 
-  BookOpen, 
-  BarChart3, 
-  FileText, 
+import { useAuth } from "@/hooks/useAuth";
+import { Link } from "react-router-dom";
+import {
+  BookOpen,
+  BarChart3,
+  FileText,
   Lightbulb,
   Target,
   Clock,
   Award,
   TrendingUp,
-  Merge
-} from 'lucide-react';
+  Merge,
+} from "lucide-react";
 
 export default function Dashboard() {
   const { user } = useAuth();
 
   const quickActions = [
     {
-      title: 'Create Roadmap',
-      description: 'Generate AI-powered learning paths',
+      title: "Create Roadmap",
+      description: "Generate AI-powered learning paths",
       icon: BookOpen,
-      href: '/roadmap/create',
-      color: 'bg-blue-500 hover:bg-blue-600',
+      href: "/roadmap/create",
+      color: "bg-blue-500 hover:bg-blue-600",
     },
     {
-      title: 'Merge Roadmaps',
-      description: 'Combine multiple learning paths intelligently',
+      title: "Merge Roadmaps",
+      description: "Combine multiple learning paths intelligently",
       icon: Merge,
-      href: '/roadmap/merge',
-      color: 'bg-indigo-500 hover:bg-indigo-600',
+      href: "/roadmap/merge",
+      color: "bg-indigo-500 hover:bg-indigo-600",
     },
     {
-      title: 'View Progress',
-      description: 'Track your learning journey',
+      title: "View Progress",
+      description: "Track your learning journey",
       icon: BarChart3,
-      href: '/progress',
-      color: 'bg-green-500 hover:bg-green-600',
+      href: "/progress",
+      color: "bg-green-500 hover:bg-green-600",
     },
     {
-      title: 'Resume Builder',
-      description: 'Build and analyze your resume',
+      title: "Resume Builder",
+      description: "Build and analyze your resume",
       icon: FileText,
-      href: '/resume',
-      color: 'bg-purple-500 hover:bg-purple-600',
+      href: "/resume",
+      color: "bg-purple-500 hover:bg-purple-600",
     },
     {
-      title: 'Recommendations',
-      description: 'Get personalized learning suggestions',
+      title: "Recommendations",
+      description: "Get personalized learning suggestions",
       icon: Lightbulb,
-      href: '/recommendations',
-      color: 'bg-yellow-500 hover:bg-yellow-600',
+      href: "/recommendations",
+      color: "bg-yellow-500 hover:bg-yellow-600",
     },
   ];
 
   const stats = [
     {
-      title: 'Learning Hours',
-      value: '24.5',
-      change: '+2.5 this week',
+      title: "Learning Hours",
+      value: "24.5",
+      change: "+2.5 this week",
       icon: Clock,
-      color: 'text-blue-600',
+      color: "text-blue-600",
     },
     {
-      title: 'Completed Modules',
-      value: '18',
-      change: '+3 this week',
+      title: "Completed Modules",
+      value: "18",
+      change: "+3 this week",
       icon: Target,
-      color: 'text-green-600',
+      color: "text-green-600",
     },
     {
-      title: 'Skill Level',
-      value: 'Intermediate',
-      change: 'Advanced soon',
+      title: "Skill Level",
+      value: "Intermediate",
+      change: "Advanced soon",
       icon: Award,
-      color: 'text-purple-600',
+      color: "text-purple-600",
     },
     {
-      title: 'Learning Streak',
-      value: '7 days',
-      change: 'Keep it up!',
+      title: "Learning Streak",
+      value: "7 days",
+      change: "Keep it up!",
       icon: TrendingUp,
-      color: 'text-orange-600',
+      color: "text-orange-600",
     },
   ];
 
@@ -89,10 +89,11 @@ export default function Dashboard() {
       {/* Welcome Header */}
       <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg p-6 text-white">
         <h1 className="text-3xl font-bold">
-          Welcome back, {user?.firstName || user?.email || 'Learner'}!
+          Welcome back, {user?.firstName || user?.email || "Learner"}!
         </h1>
         <p className="mt-2 text-blue-100">
-          Ready to continue your learning journey? Here's what's waiting for you.
+          Ready to continue your learning journey? Here's what's waiting for
+          you.
         </p>
       </div>
 
@@ -113,7 +114,9 @@ export default function Dashboard() {
                 <div className="flex items-center justify-between">
                   <div>
                     <h3 className="font-semibold text-lg">{action.title}</h3>
-                    <p className="text-sm opacity-90 mt-1">{action.description}</p>
+                    <p className="text-sm opacity-90 mt-1">
+                      {action.description}
+                    </p>
                   </div>
                   <Icon className="h-8 w-8 opacity-80" />
                 </div>
@@ -138,9 +141,15 @@ export default function Dashboard() {
               >
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">{stat.title}</p>
-                    <p className="text-2xl font-bold text-gray-900 dark:text-white">{stat.value}</p>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">{stat.change}</p>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                      {stat.title}
+                    </p>
+                    <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                      {stat.value}
+                    </p>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                      {stat.change}
+                    </p>
                   </div>
                   <Icon className={`h-8 w-8 ${stat.color}`} />
                 </div>
@@ -207,7 +216,8 @@ export default function Dashboard() {
           <div>
             <h3 className="text-xl font-bold">You're doing great!</h3>
             <p className="text-green-100">
-              You've completed 18 modules this month. Keep up the excellent work!
+              You've completed 18 modules this month. Keep up the excellent
+              work!
             </p>
           </div>
         </div>

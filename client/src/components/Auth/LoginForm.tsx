@@ -1,28 +1,28 @@
-import React, { useState } from 'react'
-import { useAuth } from '@/hooks/useAuth'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { LogIn, Mail, Lock } from 'lucide-react'
-import toast from 'react-hot-toast'
+import React, { useState } from "react";
+import { useAuth } from "@/hooks/useAuth";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { LogIn, Mail, Lock } from "lucide-react";
+import toast from "react-hot-toast";
 
 export default function LoginForm() {
-  const [email, setEmail] = useState('demo@example.com')
-  const [password, setPassword] = useState('password')
-  const { login, isLoggingIn } = useAuth()
+  const [email, setEmail] = useState("demo@example.com");
+  const [password, setPassword] = useState("password");
+  const { login, isLoggingIn } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    
+    e.preventDefault();
+
     try {
-      await login({ email, password })
-      toast.success('Welcome to Mantrix Learning Platform!')
+      await login({ email, password });
+      toast.success("Welcome to Mantrix Learning Platform!");
     } catch (error) {
-      toast.error('Login failed. Please try again.')
-      console.error('Login error:', error)
+      toast.error("Login failed. Please try again.");
+      console.error("Login error:", error);
     }
-  }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center p-4">
@@ -57,7 +57,7 @@ export default function LoginForm() {
                 />
               </div>
             </div>
-            
+
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
               <div className="relative">
@@ -74,18 +74,14 @@ export default function LoginForm() {
               </div>
             </div>
 
-            <Button 
-              type="submit" 
-              className="w-full" 
-              disabled={isLoggingIn}
-            >
+            <Button type="submit" className="w-full" disabled={isLoggingIn}>
               {isLoggingIn ? (
                 <div className="flex items-center gap-2">
                   <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
                   Signing in...
                 </div>
               ) : (
-                'Sign In'
+                "Sign In"
               )}
             </Button>
           </form>
@@ -104,5 +100,5 @@ export default function LoginForm() {
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }

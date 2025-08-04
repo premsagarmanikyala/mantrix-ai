@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useState, useEffect } from "react";
+import axios from "axios";
 import {
   BarChart,
   Bar,
@@ -10,16 +10,16 @@ import {
   ResponsiveContainer,
   PieChart,
   Pie,
-  Cell
-} from 'recharts';
+  Cell,
+} from "recharts";
 import {
   Trophy,
   Target,
   Clock,
   BookOpen,
   Award,
-  TrendingUp
-} from 'lucide-react';
+  TrendingUp,
+} from "lucide-react";
 
 interface ProgressSummary {
   totalModules: number;
@@ -41,9 +41,11 @@ interface BranchProgress {
 }
 
 export default function ProgressTracker() {
-  const [progressData, setProgressData] = useState<ProgressSummary | null>(null);
+  const [progressData, setProgressData] = useState<ProgressSummary | null>(
+    null,
+  );
   const [loading, setLoading] = useState(true);
-  const [selectedRoadmap, setSelectedRoadmap] = useState<string>('');
+  const [selectedRoadmap, setSelectedRoadmap] = useState<string>("");
   const [roadmaps, setRoadmaps] = useState<any[]>([]);
 
   useEffect(() => {
@@ -58,23 +60,25 @@ export default function ProgressTracker() {
 
   const fetchRoadmaps = async () => {
     try {
-      const response = await axios.get('/api/v1/roadmap/my-roadmaps');
+      const response = await axios.get("/api/v1/roadmap/my-roadmaps");
       setRoadmaps(response.data.roadmaps || []);
       if (response.data.roadmaps?.length > 0) {
         setSelectedRoadmap(response.data.roadmaps[0].id);
       }
     } catch (error) {
-      console.error('Error fetching roadmaps:', error);
+      console.error("Error fetching roadmaps:", error);
     }
   };
 
   const fetchProgressData = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`/api/v1/progress/summary?roadmap_id=${selectedRoadmap}`);
+      const response = await axios.get(
+        `/api/v1/progress/summary?roadmap_id=${selectedRoadmap}`,
+      );
       setProgressData(response.data);
     } catch (error) {
-      console.error('Error fetching progress data:', error);
+      console.error("Error fetching progress data:", error);
     } finally {
       setLoading(false);
     }
@@ -89,27 +93,41 @@ export default function ProgressTracker() {
     return `${minutes}m`;
   };
 
-  const pieChartData = progressData ? [
-    { name: 'Completed', value: progressData.completedModules, color: '#10B981' },
-    { name: 'Remaining', value: progressData.totalModules - progressData.completedModules, color: '#E5E7EB' }
-  ] : [];
+  const pieChartData = progressData
+    ? [
+        {
+          name: "Completed",
+          value: progressData.completedModules,
+          color: "#10B981",
+        },
+        {
+          name: "Remaining",
+          value: progressData.totalModules - progressData.completedModules,
+          color: "#E5E7EB",
+        },
+      ]
+    : [];
 
-  const barChartData = progressData?.branches.map(branch => ({
-    name: branch.branchTitle.substring(0, 20) + (branch.branchTitle.length > 20 ? '...' : ''),
-    completed: branch.completedModules,
-    total: branch.totalModules,
-    percentage: branch.progressPercent
-  })) || [];
+  const barChartData =
+    progressData?.branches.map((branch) => ({
+      name:
+        branch.branchTitle.substring(0, 20) +
+        (branch.branchTitle.length > 20 ? "..." : ""),
+      completed: branch.completedModules,
+      total: branch.totalModules,
+      percentage: branch.progressPercent,
+    })) || [];
 
   const motivationalQuotes = [
     "Every expert was once a beginner.",
     "The journey of a thousand miles begins with one step.",
     "Learning never exhausts the mind.",
     "Education is the most powerful weapon to change the world.",
-    "The beautiful thing about learning is that no one can take it away from you."
+    "The beautiful thing about learning is that no one can take it away from you.",
   ];
 
-  const randomQuote = motivationalQuotes[Math.floor(Math.random() * motivationalQuotes.length)];
+  const randomQuote =
+    motivationalQuotes[Math.floor(Math.random() * motivationalQuotes.length)];
 
   if (loading) {
     return (
@@ -126,7 +144,7 @@ export default function ProgressTracker() {
         <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
           Progress Tracker
         </h1>
-        
+
         {roadmaps.length > 0 && (
           <select
             value={selectedRoadmap}
@@ -149,7 +167,9 @@ export default function ProgressTracker() {
             <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">Overall Progress</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    Overall Progress
+                  </p>
                   <p className="text-3xl font-bold text-blue-600">
                     {Math.round(progressData.progressPercent)}%
                   </p>
@@ -161,11 +181,15 @@ export default function ProgressTracker() {
             <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">Modules Completed</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    Modules Completed
+                  </p>
                   <p className="text-3xl font-bold text-green-600">
                     {progressData.completedModules}
                   </p>
-                  <p className="text-sm text-gray-500">of {progressData.totalModules}</p>
+                  <p className="text-sm text-gray-500">
+                    of {progressData.totalModules}
+                  </p>
                 </div>
                 <BookOpen className="h-8 w-8 text-green-600" />
               </div>
@@ -174,11 +198,15 @@ export default function ProgressTracker() {
             <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">Study Time</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    Study Time
+                  </p>
                   <p className="text-3xl font-bold text-purple-600">
                     {formatDuration(progressData.completedDuration)}
                   </p>
-                  <p className="text-sm text-gray-500">of {formatDuration(progressData.totalDuration)}</p>
+                  <p className="text-sm text-gray-500">
+                    of {formatDuration(progressData.totalDuration)}
+                  </p>
                 </div>
                 <Clock className="h-8 w-8 text-purple-600" />
               </div>
@@ -187,7 +215,9 @@ export default function ProgressTracker() {
             <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">Active Branches</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    Active Branches
+                  </p>
                   <p className="text-3xl font-bold text-orange-600">
                     {progressData.branches.length}
                   </p>
@@ -235,8 +265,8 @@ export default function ProgressTracker() {
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={barChartData}>
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis 
-                      dataKey="name" 
+                    <XAxis
+                      dataKey="name"
                       angle={-45}
                       textAnchor="end"
                       height={80}
@@ -260,7 +290,10 @@ export default function ProgressTracker() {
               </h3>
               <div className="space-y-4">
                 {progressData.branches.map((branch) => (
-                  <div key={branch.branchId} className="border border-gray-200 dark:border-gray-600 rounded-lg p-4">
+                  <div
+                    key={branch.branchId}
+                    className="border border-gray-200 dark:border-gray-600 rounded-lg p-4"
+                  >
                     <div className="flex items-center justify-between mb-2">
                       <h4 className="font-medium text-gray-900 dark:text-white">
                         {branch.branchTitle}
@@ -269,20 +302,22 @@ export default function ProgressTracker() {
                         {Math.round(branch.progressPercent)}% complete
                       </span>
                     </div>
-                    
+
                     <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 mb-2">
                       <div
                         className="bg-blue-600 h-2 rounded-full transition-all duration-300"
                         style={{ width: `${branch.progressPercent}%` }}
                       ></div>
                     </div>
-                    
+
                     <div className="flex items-center justify-between text-sm text-gray-500">
                       <span>
-                        {branch.completedModules} of {branch.totalModules} modules
+                        {branch.completedModules} of {branch.totalModules}{" "}
+                        modules
                       </span>
                       <span>
-                        {formatDuration(branch.completedDuration)} / {formatDuration(branch.estimatedDuration)}
+                        {formatDuration(branch.completedDuration)} /{" "}
+                        {formatDuration(branch.estimatedDuration)}
                       </span>
                     </div>
                   </div>
@@ -312,25 +347,37 @@ export default function ProgressTracker() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <div className="text-center">
             <Award className="h-12 w-12 text-yellow-500 mx-auto mb-2" />
-            <p className="text-sm font-medium text-gray-900 dark:text-white">First Module</p>
-            <p className="text-xs text-gray-500">Completed your first learning module</p>
+            <p className="text-sm font-medium text-gray-900 dark:text-white">
+              First Module
+            </p>
+            <p className="text-xs text-gray-500">
+              Completed your first learning module
+            </p>
           </div>
-          
+
           <div className="text-center">
             <Target className="h-12 w-12 text-blue-500 mx-auto mb-2" />
-            <p className="text-sm font-medium text-gray-900 dark:text-white">50% Progress</p>
-            <p className="text-xs text-gray-500">Halfway through your journey</p>
+            <p className="text-sm font-medium text-gray-900 dark:text-white">
+              50% Progress
+            </p>
+            <p className="text-xs text-gray-500">
+              Halfway through your journey
+            </p>
           </div>
-          
+
           <div className="text-center opacity-50">
             <Trophy className="h-12 w-12 text-gray-400 mx-auto mb-2" />
-            <p className="text-sm font-medium text-gray-900 dark:text-white">Completionist</p>
+            <p className="text-sm font-medium text-gray-900 dark:text-white">
+              Completionist
+            </p>
             <p className="text-xs text-gray-500">Complete all modules</p>
           </div>
-          
+
           <div className="text-center opacity-50">
             <TrendingUp className="h-12 w-12 text-gray-400 mx-auto mb-2" />
-            <p className="text-sm font-medium text-gray-900 dark:text-white">Streak Master</p>
+            <p className="text-sm font-medium text-gray-900 dark:text-white">
+              Streak Master
+            </p>
             <p className="text-xs text-gray-500">7-day learning streak</p>
           </div>
         </div>

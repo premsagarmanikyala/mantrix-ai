@@ -1,4 +1,4 @@
-import { Users, FolderOpen, FileText, Map } from 'lucide-react'
+import { Users, FolderOpen, FileText, Map } from "lucide-react";
 
 export default function Home() {
   return (
@@ -8,7 +8,8 @@ export default function Home() {
           Welcome to Mantrix
         </h1>
         <p className="mt-2 text-gray-600 dark:text-gray-300">
-          A comprehensive full-stack monorepo with FastAPI backend and React TypeScript frontend
+          A comprehensive full-stack monorepo with FastAPI backend and React
+          TypeScript frontend
         </p>
       </div>
 
@@ -92,14 +93,27 @@ export default function Home() {
         </h2>
         <div className="prose dark:prose-invert max-w-none">
           <ul className="space-y-2">
-            <li><strong>Backend:</strong> FastAPI with Python 3.11, SQLAlchemy, Pydantic</li>
-            <li><strong>Frontend:</strong> React 18 with TypeScript, Tailwind CSS, React Query</li>
-            <li><strong>Database:</strong> PostgreSQL (configurable)</li>
-            <li><strong>Infrastructure:</strong> Docker, GitHub Actions CI/CD</li>
-            <li><strong>AI Services:</strong> Resume builder and roadmap generation engines</li>
+            <li>
+              <strong>Backend:</strong> FastAPI with Python 3.11, SQLAlchemy,
+              Pydantic
+            </li>
+            <li>
+              <strong>Frontend:</strong> React 18 with TypeScript, Tailwind CSS,
+              React Query
+            </li>
+            <li>
+              <strong>Database:</strong> PostgreSQL (configurable)
+            </li>
+            <li>
+              <strong>Infrastructure:</strong> Docker, GitHub Actions CI/CD
+            </li>
+            <li>
+              <strong>AI Services:</strong> Resume builder and roadmap
+              generation engines
+            </li>
           </ul>
         </div>
       </div>
     </div>
-  )
+  );
 }

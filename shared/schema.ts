@@ -49,7 +49,7 @@ export interface ProgressEntry {
 export interface Resume {
   id: string;
   userId: string;
-  mode: 'study' | 'fast' | 'analyzer';
+  mode: "study" | "fast" | "analyzer";
   content: string;
   jobDescription?: string;
   atsScore?: number;

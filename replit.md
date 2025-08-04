@@ -1,9 +1,11 @@
 # Mantrix - Full-Stack Monorepo
 
 ## Project Overview
+
 Mantrix is a comprehensive full-stack monorepo scaffolding with FastAPI backend and React TypeScript frontend, designed for scalable web application development.
 
 ## Architecture
+
 - **Backend**: FastAPI (Python 3.11) with SQLAlchemy ORM
 - **Frontend**: React 18 with TypeScript, Tailwind CSS
 - **Database**: PostgreSQL (Neon database with psycopg2-binary driver)
@@ -11,6 +13,7 @@ Mantrix is a comprehensive full-stack monorepo scaffolding with FastAPI backend 
 - **CI/CD**: GitHub Actions pipeline
 
 ## Project Structure
+
 ```
 mantrix/
 ├── apps/
@@ -32,6 +35,7 @@ mantrix/
 ```
 
 ## Current Status
+
 - ✅ Complete monorepo structure implemented
 - ✅ FastAPI backend with SQLAlchemy models and AI-powered services
 - ✅ **Comprehensive React 18 frontend with TypeScript and responsive UI**
@@ -44,6 +48,7 @@ mantrix/
 - ✅ Comprehensive documentation
 
 ## Key Features
+
 - User management system with JWT authentication
 - Project management
 - AI-powered roadmap generation using OpenAI GPT-4 and LangChain
@@ -78,6 +83,7 @@ mantrix/
 - Containerized deployment ready
 
 ## Recent Changes
+
 - ✅ **FRONTEND DEPENDENCY RESOLUTION COMPLETE** (August 2025)
   - ✅ **Fixed Zod version conflict by downgrading to 3.25.1 for drizzle-zod compatibility**
   - ✅ **Successfully resolved React frontend dependency installation issues**
@@ -175,6 +181,7 @@ mantrix/
 - Configured all infrastructure files (Docker, nginx, CI/CD)
 
 ## API Endpoints
+
 - `/health` - Health check
 - `/api/auth/signup` - User registration with email and password
 - `/api/auth/login` - User authentication with JWT token response
@@ -207,6 +214,7 @@ mantrix/
 ## Running the Project
 
 ### Local Development
+
 ```bash
 # Backend
 cd apps/backend
@@ -218,15 +226,18 @@ npm install && npm run dev
 ```
 
 ### Docker
+
 ```bash
 cd infra
 docker-compose up -d
 ```
 
 ## User Preferences
-*No specific user preferences recorded yet*
+
+_No specific user preferences recorded yet_
 
 ## Technical Decisions
+
 - Using absolute imports in Python backend for better module resolution
 - PostgreSQL as production database with Neon hosting for scalability and reliability
 - Dynamic database configuration supporting both SQLite (fallback) and PostgreSQL

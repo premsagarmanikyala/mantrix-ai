@@ -12,7 +12,7 @@ export const Tabs = ({ children, defaultValue }: TabsProps) => {
       {React.Children.map(children, (child) =>
         React.isValidElement(child)
           ? React.cloneElement(child, { activeTab, setActiveTab })
-          : child
+          : child,
       )}
     </div>
   );
@@ -24,13 +24,17 @@ type TabsListProps = {
   setActiveTab?: (value: string) => void;
 };
 
-export const TabsList = ({ children, activeTab, setActiveTab }: TabsListProps) => {
+export const TabsList = ({
+  children,
+  activeTab,
+  setActiveTab,
+}: TabsListProps) => {
   return (
     <div className="flex border-b">
       {React.Children.map(children, (child) =>
         React.isValidElement(child)
           ? React.cloneElement(child, { activeTab, setActiveTab })
-          : child
+          : child,
       )}
     </div>
   );
@@ -68,7 +72,11 @@ type TabsContentProps = {
   activeTab?: string;
 };
 
-export const TabsContent = ({ value, children, activeTab }: TabsContentProps) => {
+export const TabsContent = ({
+  value,
+  children,
+  activeTab,
+}: TabsContentProps) => {
   if (activeTab !== value) return null;
   return <div className="p-4">{children}</div>;
 };

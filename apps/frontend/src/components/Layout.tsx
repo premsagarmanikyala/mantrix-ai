@@ -1,33 +1,33 @@
-import { Link, useLocation } from 'react-router-dom'
-import { 
-  Home, 
-  BarChart3, 
-  FileText, 
-  Lightbulb, 
+import { Link, useLocation } from "react-router-dom";
+import {
+  Home,
+  BarChart3,
+  FileText,
+  Lightbulb,
   Map,
   Merge,
   LogOut,
-  User
-} from 'lucide-react'
-import { useAuth } from '@/hooks/useAuth'
-import { cn } from '@/lib/utils'
+  User,
+} from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
+import { cn } from "@/lib/utils";
 
 interface LayoutProps {
-  children: React.ReactNode
+  children: React.ReactNode;
 }
 
 const navigation = [
-  { name: 'Dashboard', href: '/', icon: Home },
-  { name: 'Roadmap View', href: '/roadmap/view', icon: Map },
-  { name: 'Merge Roadmaps', href: '/roadmap/merge', icon: Merge },
-  { name: 'Progress Tracker', href: '/progress', icon: BarChart3 },
-  { name: 'Resume Builder', href: '/resume', icon: FileText },
-  { name: 'Recommendations', href: '/recommendations', icon: Lightbulb },
-]
+  { name: "Dashboard", href: "/", icon: Home },
+  { name: "Roadmap View", href: "/roadmap/view", icon: Map },
+  { name: "Merge Roadmaps", href: "/roadmap/merge", icon: Merge },
+  { name: "Progress Tracker", href: "/progress", icon: BarChart3 },
+  { name: "Resume Builder", href: "/resume", icon: FileText },
+  { name: "Recommendations", href: "/recommendations", icon: Lightbulb },
+];
 
 export default function Layout({ children }: LayoutProps) {
-  const location = useLocation()
-  const { user, logout } = useAuth()
+  const location = useLocation();
+  const { user, logout } = useAuth();
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
@@ -39,7 +39,7 @@ export default function Layout({ children }: LayoutProps) {
               Mantrix Learning
             </h1>
           </div>
-          
+
           {/* User Profile */}
           <div className="p-4 border-b border-gray-200 dark:border-gray-700">
             <div className="flex items-center space-x-3">
@@ -48,7 +48,7 @@ export default function Layout({ children }: LayoutProps) {
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
-                  {user?.firstName || user?.email || 'User'}
+                  {user?.firstName || user?.email || "User"}
                 </p>
                 <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
                   Learner
@@ -56,29 +56,29 @@ export default function Layout({ children }: LayoutProps) {
               </div>
             </div>
           </div>
-          
+
           <nav className="mt-4 space-y-1 px-4">
             {navigation.map((item) => {
-              const Icon = item.icon
-              const isActive = location.pathname === item.href
+              const Icon = item.icon;
+              const isActive = location.pathname === item.href;
               return (
                 <Link
                   key={item.name}
                   to={item.href}
                   className={cn(
-                    'flex items-center px-4 py-2 text-sm font-medium rounded-md transition-colors',
+                    "flex items-center px-4 py-2 text-sm font-medium rounded-md transition-colors",
                     isActive
-                      ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-200'
-                      : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white'
+                      ? "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-200"
+                      : "text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white",
                   )}
                 >
                   <Icon className="mr-3 h-5 w-5" />
                   {item.name}
                 </Link>
-              )
+              );
             })}
           </nav>
-          
+
           {/* Logout Button */}
           <div className="absolute bottom-4 left-4 right-4">
             <button
@@ -100,11 +100,9 @@ export default function Layout({ children }: LayoutProps) {
               </h2>
             </div>
           </header>
-          <main className="p-6">
-            {children}
-          </main>
+          <main className="p-6">{children}</main>
         </div>
       </div>
     </div>
-  )
+  );
 }

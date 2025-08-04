@@ -1,69 +1,69 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { BookOpen, Zap, Settings, ArrowRight } from 'lucide-react';
-import toast from 'react-hot-toast';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { BookOpen, Zap, Settings, ArrowRight } from "lucide-react";
+import toast from "react-hot-toast";
 
 export default function RoadmapCreate() {
-  const [userInput, setUserInput] = useState('');
-  const [mode, setMode] = useState<'quick' | 'detailed' | 'custom'>('detailed');
+  const [userInput, setUserInput] = useState("");
+  const [mode, setMode] = useState<"quick" | "detailed" | "custom">("detailed");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const modes = [
     {
-      id: 'quick' as const,
-      name: 'Quick Start',
+      id: "quick" as const,
+      name: "Quick Start",
       icon: Zap,
-      description: 'Fast roadmap generation with essential content',
-      detail: 'Perfect for getting started quickly with core concepts.',
+      description: "Fast roadmap generation with essential content",
+      detail: "Perfect for getting started quickly with core concepts.",
     },
     {
-      id: 'detailed' as const,
-      name: 'Comprehensive',
+      id: "detailed" as const,
+      name: "Comprehensive",
       icon: BookOpen,
-      description: 'Detailed roadmap with extensive content',
-      detail: 'In-depth learning path with comprehensive coverage.',
+      description: "Detailed roadmap with extensive content",
+      detail: "In-depth learning path with comprehensive coverage.",
     },
     {
-      id: 'custom' as const,
-      name: 'Customizable',
+      id: "custom" as const,
+      name: "Customizable",
       icon: Settings,
-      description: 'Generate roadmap with customization options',
-      detail: 'Create a roadmap you can modify and tailor to your needs.',
+      description: "Generate roadmap with customization options",
+      detail: "Create a roadmap you can modify and tailor to your needs.",
     },
   ];
 
   const exampleInputs = [
-    'Learn full-stack web development with React and Node.js',
-    'Master machine learning and data science with Python',
-    'Become a DevOps engineer with cloud technologies',
-    'Learn mobile app development with React Native',
-    'Master system design for senior engineer roles',
+    "Learn full-stack web development with React and Node.js",
+    "Master machine learning and data science with Python",
+    "Become a DevOps engineer with cloud technologies",
+    "Learn mobile app development with React Native",
+    "Master system design for senior engineer roles",
   ];
 
   const generateRoadmap = async () => {
     if (!userInput.trim()) {
-      toast.error('Please enter a learning goal');
+      toast.error("Please enter a learning goal");
       return;
     }
 
     try {
       setLoading(true);
-      const response = await axios.post('/api/v1/roadmap/generate', {
+      const response = await axios.post("/api/v1/roadmap/generate", {
         user_input: userInput,
-        mode: mode === 'quick' ? 'quick' : 'full'
+        mode: mode === "quick" ? "quick" : "full",
       });
 
       if (response.data.roadmaps?.length > 0) {
-        toast.success('Roadmap generated successfully!');
+        toast.success("Roadmap generated successfully!");
         navigate(`/roadmap/view?id=${response.data.roadmaps[0].id}`);
       } else {
-        toast.error('Failed to generate roadmap');
+        toast.error("Failed to generate roadmap");
       }
     } catch (error) {
-      console.error('Error generating roadmap:', error);
-      toast.error('Failed to generate roadmap');
+      console.error("Error generating roadmap:", error);
+      toast.error("Failed to generate roadmap");
     } finally {
       setLoading(false);
     }
@@ -86,21 +86,23 @@ export default function RoadmapCreate() {
         {modes.map((modeOption) => {
           const Icon = modeOption.icon;
           const isActive = mode === modeOption.id;
-          
+
           return (
             <button
               key={modeOption.id}
               onClick={() => setMode(modeOption.id)}
               className={`text-left p-6 rounded-xl border-2 transition-all duration-200 ${
                 isActive
-                  ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20 shadow-lg'
-                  : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 hover:shadow-md'
+                  ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20 shadow-lg"
+                  : "border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 hover:shadow-md"
               }`}
             >
               <div className="flex items-start space-x-4">
-                <div className={`p-3 rounded-lg ${
-                  isActive ? 'bg-blue-500' : 'bg-gray-100 dark:bg-gray-700'
-                } text-white`}>
+                <div
+                  className={`p-3 rounded-lg ${
+                    isActive ? "bg-blue-500" : "bg-gray-100 dark:bg-gray-700"
+                  } text-white`}
+                >
                   <Icon className="h-6 w-6" />
                 </div>
                 <div className="flex-1">
@@ -125,7 +127,7 @@ export default function RoadmapCreate() {
         <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-6">
           What would you like to learn?
         </h2>
-        
+
         <div className="space-y-4">
           <textarea
             value={userInput}
@@ -134,7 +136,7 @@ export default function RoadmapCreate() {
             className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white text-lg"
             placeholder="Describe your learning goals... (e.g., 'Learn full-stack web development with React and Node.js')"
           />
-          
+
           {/* Example Inputs */}
           <div>
             <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
@@ -179,27 +181,35 @@ export default function RoadmapCreate() {
           <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
             <BookOpen className="h-8 w-8 text-blue-600" />
           </div>
-          <h3 className="font-semibold text-gray-900 dark:text-white">AI-Powered</h3>
+          <h3 className="font-semibold text-gray-900 dark:text-white">
+            AI-Powered
+          </h3>
           <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
-            Advanced AI creates personalized learning paths tailored to your goals
+            Advanced AI creates personalized learning paths tailored to your
+            goals
           </p>
         </div>
-        
+
         <div className="text-center p-6">
           <div className="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
             <Settings className="h-8 w-8 text-green-600" />
           </div>
-          <h3 className="font-semibold text-gray-900 dark:text-white">Customizable</h3>
+          <h3 className="font-semibold text-gray-900 dark:text-white">
+            Customizable
+          </h3>
           <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
-            Modify and adapt your roadmap as you progress and discover new interests
+            Modify and adapt your roadmap as you progress and discover new
+            interests
           </p>
         </div>
-        
+
         <div className="text-center p-6">
           <div className="w-16 h-16 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
             <Zap className="h-8 w-8 text-purple-600" />
           </div>
-          <h3 className="font-semibold text-gray-900 dark:text-white">Progress Tracking</h3>
+          <h3 className="font-semibold text-gray-900 dark:text-white">
+            Progress Tracking
+          </h3>
           <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
             Track your progress and celebrate milestones as you advance
           </p>

@@ -1,19 +1,19 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
-import { 
-  FileText, 
-  Zap, 
-  Search, 
-  Download, 
+import { useState, useEffect } from "react";
+import axios from "axios";
+import {
+  FileText,
+  Zap,
+  Search,
+  Download,
   Eye,
   Edit3,
   AlertCircle,
-  CheckCircle
-} from 'lucide-react';
+  CheckCircle,
+} from "lucide-react";
 
 interface Resume {
   id: string;
-  mode: 'study' | 'fast' | 'analyzer';
+  mode: "study" | "fast" | "analyzer";
   content: string;
   atsScore?: number;
   feedback?: string;
@@ -21,9 +21,11 @@ interface Resume {
 }
 
 export default function ResumeBuilder() {
-  const [activeMode, setActiveMode] = useState<'study' | 'fast' | 'analyzer'>('fast');
-  const [resumeContent, setResumeContent] = useState('');
-  const [jobDescription, setJobDescription] = useState('');
+  const [activeMode, setActiveMode] = useState<"study" | "fast" | "analyzer">(
+    "fast",
+  );
+  const [resumeContent, setResumeContent] = useState("");
+  const [jobDescription, setJobDescription] = useState("");
   const [resumes, setResumes] = useState<Resume[]>([]);
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<any>(null);
@@ -34,10 +36,10 @@ export default function ResumeBuilder() {
 
   const fetchResumes = async () => {
     try {
-      const response = await axios.get('/api/v1/resume/my-resumes');
+      const response = await axios.get("/api/v1/resume/my-resumes");
       setResumes(response.data.resumes || []);
     } catch (error) {
-      console.error('Error fetching resumes:', error);
+      console.error("Error fetching resumes:", error);
     }
   };
 
@@ -45,21 +47,21 @@ export default function ResumeBuilder() {
     try {
       setLoading(true);
       const requestData: any = { mode: activeMode };
-      
-      if (activeMode === 'analyzer' && resumeContent && jobDescription) {
+
+      if (activeMode === "analyzer" && resumeContent && jobDescription) {
         requestData.existing_resume = resumeContent;
         requestData.job_description = jobDescription;
-      } else if (activeMode === 'study') {
+      } else if (activeMode === "study") {
         // Study mode uses completed modules only
       } else {
         // Fast mode uses full roadmap content
       }
 
-      const response = await axios.post('/api/v1/resume/generate', requestData);
+      const response = await axios.post("/api/v1/resume/generate", requestData);
       setResult(response.data);
       await fetchResumes();
     } catch (error) {
-      console.error('Error generating resume:', error);
+      console.error("Error generating resume:", error);
     } finally {
       setLoading(false);
     }
@@ -67,28 +69,31 @@ export default function ResumeBuilder() {
 
   const modes = [
     {
-      id: 'study' as const,
-      name: 'Study Mode',
+      id: "study" as const,
+      name: "Study Mode",
       icon: FileText,
-      description: 'Resume based on completed modules only',
-      color: 'bg-blue-500 hover:bg-blue-600',
-      detail: 'Generate a resume showcasing skills from modules you\'ve actually completed.',
+      description: "Resume based on completed modules only",
+      color: "bg-blue-500 hover:bg-blue-600",
+      detail:
+        "Generate a resume showcasing skills from modules you've actually completed.",
     },
     {
-      id: 'fast' as const,
-      name: 'Fast Mode',
+      id: "fast" as const,
+      name: "Fast Mode",
       icon: Zap,
-      description: 'Full roadmap content resume generation',
-      color: 'bg-green-500 hover:bg-green-600',
-      detail: 'Create a comprehensive resume including all your planned learning paths.',
+      description: "Full roadmap content resume generation",
+      color: "bg-green-500 hover:bg-green-600",
+      detail:
+        "Create a comprehensive resume including all your planned learning paths.",
     },
     {
-      id: 'analyzer' as const,
-      name: 'Analyzer Mode',
+      id: "analyzer" as const,
+      name: "Analyzer Mode",
       icon: Search,
-      description: 'Resume vs job description analysis with ATS scoring',
-      color: 'bg-purple-500 hover:bg-purple-600',
-      detail: 'Analyze your resume against a job description with ATS compatibility scoring.',
+      description: "Resume vs job description analysis with ATS scoring",
+      color: "bg-purple-500 hover:bg-purple-600",
+      detail:
+        "Analyze your resume against a job description with ATS compatibility scoring.",
     },
   ];
 
@@ -97,9 +102,9 @@ export default function ResumeBuilder() {
   };
 
   const getScoreColor = (score: number) => {
-    if (score >= 80) return 'text-green-600';
-    if (score >= 60) return 'text-yellow-600';
-    return 'text-red-600';
+    if (score >= 80) return "text-green-600";
+    if (score >= 60) return "text-yellow-600";
+    return "text-red-600";
   };
 
   const getScoreIcon = (score: number) => {
@@ -125,15 +130,15 @@ export default function ResumeBuilder() {
         {modes.map((mode) => {
           const Icon = mode.icon;
           const isActive = activeMode === mode.id;
-          
+
           return (
             <button
               key={mode.id}
               onClick={() => setActiveMode(mode.id)}
               className={`text-left p-6 rounded-lg border-2 transition-all duration-200 ${
                 isActive
-                  ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
-                  : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
+                  ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20"
+                  : "border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600"
               }`}
             >
               <div className="flex items-start space-x-4">
@@ -160,10 +165,10 @@ export default function ResumeBuilder() {
       {/* Input Section */}
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
         <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-          Generate Resume - {modes.find(m => m.id === activeMode)?.name}
+          Generate Resume - {modes.find((m) => m.id === activeMode)?.name}
         </h2>
-        
-        {activeMode === 'analyzer' && (
+
+        {activeMode === "analyzer" && (
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -177,7 +182,7 @@ export default function ResumeBuilder() {
                 placeholder="Paste your current resume content here..."
               />
             </div>
-            
+
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Job Description
@@ -192,8 +197,8 @@ export default function ResumeBuilder() {
             </div>
           </div>
         )}
-        
-        {activeMode !== 'analyzer' && (
+
+        {activeMode !== "analyzer" && (
           <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-md p-4">
             <div className="flex">
               <div className="flex-shrink-0">
@@ -205,10 +210,9 @@ export default function ResumeBuilder() {
                 </h3>
                 <div className="mt-2 text-sm text-blue-700 dark:text-blue-300">
                   <p>
-                    {activeMode === 'study' 
-                      ? 'We\'ll create a resume based on your completed learning modules and verified skills.'
-                      : 'We\'ll generate a comprehensive resume including all your learning paths and planned skills.'
-                    }
+                    {activeMode === "study"
+                      ? "We'll create a resume based on your completed learning modules and verified skills."
+                      : "We'll generate a comprehensive resume including all your learning paths and planned skills."}
                   </p>
                 </div>
               </div>
@@ -218,7 +222,10 @@ export default function ResumeBuilder() {
 
         <button
           onClick={generateResume}
-          disabled={loading || (activeMode === 'analyzer' && (!resumeContent || !jobDescription))}
+          disabled={
+            loading ||
+            (activeMode === "analyzer" && (!resumeContent || !jobDescription))
+          }
           className="mt-4 px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
         >
           {loading ? (
@@ -263,9 +270,15 @@ export default function ResumeBuilder() {
                 <div className="flex items-center space-x-2">
                   {(() => {
                     const ScoreIcon = getScoreIcon(result.ats_score);
-                    return <ScoreIcon className={`h-5 w-5 ${getScoreColor(result.ats_score)}`} />;
+                    return (
+                      <ScoreIcon
+                        className={`h-5 w-5 ${getScoreColor(result.ats_score)}`}
+                      />
+                    );
                   })()}
-                  <span className={`text-2xl font-bold ${getScoreColor(result.ats_score)}`}>
+                  <span
+                    className={`text-2xl font-bold ${getScoreColor(result.ats_score)}`}
+                  >
                     {result.ats_score}%
                   </span>
                 </div>
@@ -291,7 +304,7 @@ export default function ResumeBuilder() {
         <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
           Recent Resumes
         </h2>
-        
+
         {resumes.length > 0 ? (
           <div className="space-y-3">
             {resumes.slice(0, 5).map((resume) => (
@@ -300,29 +313,42 @@ export default function ResumeBuilder() {
                 className="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700"
               >
                 <div className="flex items-center space-x-4">
-                  <div className={`p-2 rounded-lg ${
-                    resume.mode === 'study' ? 'bg-blue-500' :
-                    resume.mode === 'fast' ? 'bg-green-500' : 'bg-purple-500'
-                  } text-white`}>
-                    {resume.mode === 'study' ? <FileText className="h-4 w-4" /> :
-                     resume.mode === 'fast' ? <Zap className="h-4 w-4" /> :
-                     <Search className="h-4 w-4" />}
+                  <div
+                    className={`p-2 rounded-lg ${
+                      resume.mode === "study"
+                        ? "bg-blue-500"
+                        : resume.mode === "fast"
+                          ? "bg-green-500"
+                          : "bg-purple-500"
+                    } text-white`}
+                  >
+                    {resume.mode === "study" ? (
+                      <FileText className="h-4 w-4" />
+                    ) : resume.mode === "fast" ? (
+                      <Zap className="h-4 w-4" />
+                    ) : (
+                      <Search className="h-4 w-4" />
+                    )}
                   </div>
                   <div>
                     <p className="font-medium text-gray-900 dark:text-white">
-                      {resume.mode.charAt(0).toUpperCase() + resume.mode.slice(1)} Mode Resume
+                      {resume.mode.charAt(0).toUpperCase() +
+                        resume.mode.slice(1)}{" "}
+                      Mode Resume
                     </p>
                     <p className="text-sm text-gray-500">
                       {formatDate(resume.createdAt)}
                       {resume.atsScore && (
-                        <span className={`ml-2 ${getScoreColor(resume.atsScore)}`}>
+                        <span
+                          className={`ml-2 ${getScoreColor(resume.atsScore)}`}
+                        >
                           • ATS Score: {resume.atsScore}%
                         </span>
                       )}
                     </p>
                   </div>
                 </div>
-                
+
                 <div className="flex space-x-2">
                   <button className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200">
                     <Eye className="h-4 w-4" />

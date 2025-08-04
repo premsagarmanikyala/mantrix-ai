@@ -1,30 +1,30 @@
-import { useState } from 'react';
-import { useAuth } from '@/hooks/useAuth';
-import { Eye, EyeOff, LogIn, UserPlus } from 'lucide-react';
+import { useState } from "react";
+import { useAuth } from "@/hooks/useAuth";
+import { Eye, EyeOff, LogIn, UserPlus } from "lucide-react";
 
 export default function LoginForm() {
   const [isLogin, setIsLogin] = useState(true);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   const { login, signup } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    setError('');
+    setError("");
 
-    const success = isLogin 
+    const success = isLogin
       ? await login(email, password)
       : await signup(email, password);
 
     if (!success) {
-      setError(isLogin ? 'Invalid credentials' : 'Registration failed');
+      setError(isLogin ? "Invalid credentials" : "Registration failed");
     }
-    
+
     setIsLoading(false);
   };
 
@@ -36,10 +36,12 @@ export default function LoginForm() {
             Welcome to Mantrix
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600 dark:text-gray-400">
-            {isLogin ? 'Sign in to your account' : 'Create your learning account'}
+            {isLogin
+              ? "Sign in to your account"
+              : "Create your learning account"}
           </p>
         </div>
-        
+
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="rounded-md shadow-sm -space-y-px">
             <div>
@@ -65,8 +67,8 @@ export default function LoginForm() {
               <input
                 id="password"
                 name="password"
-                type={showPassword ? 'text' : 'password'}
-                autoComplete={isLogin ? 'current-password' : 'new-password'}
+                type={showPassword ? "text" : "password"}
+                autoComplete={isLogin ? "current-password" : "new-password"}
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -106,7 +108,7 @@ export default function LoginForm() {
                   <UserPlus className="h-5 w-5 text-indigo-500 group-hover:text-indigo-400" />
                 )}
               </span>
-              {isLoading ? 'Please wait...' : (isLogin ? 'Sign In' : 'Sign Up')}
+              {isLoading ? "Please wait..." : isLogin ? "Sign In" : "Sign Up"}
             </button>
           </div>
 
@@ -116,10 +118,9 @@ export default function LoginForm() {
               onClick={() => setIsLogin(!isLogin)}
               className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 text-sm"
             >
-              {isLogin 
-                ? "Don't have an account? Sign up" 
-                : "Already have an account? Sign in"
-              }
+              {isLogin
+                ? "Don't have an account? Sign up"
+                : "Already have an account? Sign in"}
             </button>
           </div>
         </form>

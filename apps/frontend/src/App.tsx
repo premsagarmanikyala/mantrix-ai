@@ -1,25 +1,25 @@
-import { Routes, Route, Navigate } from 'react-router-dom'
-import { useAuth } from './hooks/useAuth'
-import Layout from './components/Layout'
-import LoginForm from './components/Auth/LoginForm'
-import Dashboard from './pages/Dashboard'
-import RoadmapView from './pages/RoadmapView'
-import RoadmapCreate from './pages/RoadmapCreate'
-import ProgressTracker from './pages/ProgressTracker'
-import ResumeBuilder from './pages/ResumeBuilder'
-import RecommendationCenter from './pages/RecommendationCenter'
-import RoadmapMerge from './pages/RoadmapMerge'
-import { Toaster } from 'react-hot-toast'
+import { Routes, Route, Navigate } from "react-router-dom";
+import { useAuth } from "./hooks/useAuth";
+import Layout from "./components/Layout";
+import LoginForm from "./components/Auth/LoginForm";
+import Dashboard from "./pages/Dashboard";
+import RoadmapView from "./pages/RoadmapView";
+import RoadmapCreate from "./pages/RoadmapCreate";
+import ProgressTracker from "./pages/ProgressTracker";
+import ResumeBuilder from "./pages/ResumeBuilder";
+import RecommendationCenter from "./pages/RecommendationCenter";
+import RoadmapMerge from "./pages/RoadmapMerge";
+import { Toaster } from "react-hot-toast";
 
 function App() {
-  const { isAuthenticated, isLoading } = useAuth()
+  const { isAuthenticated, isLoading } = useAuth();
 
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
         <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
       </div>
-    )
+    );
   }
 
   if (!isAuthenticated) {
@@ -28,7 +28,7 @@ function App() {
         <LoginForm />
         <Toaster position="top-right" />
       </>
-    )
+    );
   }
 
   return (
@@ -48,7 +48,7 @@ function App() {
       </Layout>
       <Toaster position="top-right" />
     </>
-  )
+  );
 }
 
-export default App
+export default App;

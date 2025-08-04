@@ -1,14 +1,14 @@
-import { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import axios from 'axios';
-import { 
-  CheckCircle, 
-  Clock, 
-  Play, 
+import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
+import axios from "axios";
+import {
+  CheckCircle,
+  Clock,
+  Play,
   Calendar,
   BookOpen,
-  Award
-} from 'lucide-react';
+  Award,
+} from "lucide-react";
 
 interface Module {
   id: string;
@@ -42,8 +42,8 @@ interface Progress {
 
 export default function RoadmapView() {
   const [searchParams] = useSearchParams();
-  const roadmapId = searchParams.get('id');
-  
+  const roadmapId = searchParams.get("id");
+
   const [roadmap, setRoadmap] = useState<Roadmap | null>(null);
   const [progress, setProgress] = useState<Progress[]>([]);
   const [loading, setLoading] = useState(true);
@@ -58,17 +58,20 @@ export default function RoadmapView() {
   const fetchRoadmapAndProgress = async () => {
     try {
       setLoading(true);
-      
+
       // Fetch roadmap details
-      const roadmapResponse = await axios.get(`/api/v1/roadmap/id/${roadmapId}`);
+      const roadmapResponse = await axios.get(
+        `/api/v1/roadmap/id/${roadmapId}`,
+      );
       setRoadmap(roadmapResponse.data);
-      
+
       // Fetch progress
-      const progressResponse = await axios.get(`/api/v1/progress/summary?roadmap_id=${roadmapId}`);
+      const progressResponse = await axios.get(
+        `/api/v1/progress/summary?roadmap_id=${roadmapId}`,
+      );
       setProgress(progressResponse.data.completed_modules || []);
-      
     } catch (error) {
-      console.error('Error fetching roadmap data:', error);
+      console.error("Error fetching roadmap data:", error);
     } finally {
       setLoading(false);
     }
@@ -76,27 +79,27 @@ export default function RoadmapView() {
 
   const markModuleComplete = async (moduleId: string, branchId: string) => {
     try {
-      await axios.post('/api/v1/progress/complete', {
+      await axios.post("/api/v1/progress/complete", {
         module_id: moduleId,
         branch_id: branchId,
         roadmap_id: roadmapId,
-        duration_completed: 600 // Default 10 minutes
+        duration_completed: 600, // Default 10 minutes
       });
-      
+
       // Refresh progress
       await fetchRoadmapAndProgress();
     } catch (error) {
-      console.error('Error marking module complete:', error);
+      console.error("Error marking module complete:", error);
     }
   };
 
   const isModuleCompleted = (moduleId: string) => {
-    return progress.some(p => p.moduleId === moduleId && p.completed);
+    return progress.some((p) => p.moduleId === moduleId && p.completed);
   };
 
   const calculateBranchProgress = (branch: Branch) => {
-    const completedModules = branch.videos.filter(video => 
-      isModuleCompleted(video.id)
+    const completedModules = branch.videos.filter((video) =>
+      isModuleCompleted(video.id),
     ).length;
     return Math.round((completedModules / branch.videos.length) * 100);
   };
@@ -156,7 +159,15 @@ export default function RoadmapView() {
           </div>
           <div className="text-right">
             <div className="text-2xl font-bold text-blue-600">
-              {Math.round((progress.length / roadmap.branches.reduce((acc, branch) => acc + branch.videos.length, 0)) * 100) || 0}%
+              {Math.round(
+                (progress.length /
+                  roadmap.branches.reduce(
+                    (acc, branch) => acc + branch.videos.length,
+                    0,
+                  )) *
+                  100,
+              ) || 0}
+              %
             </div>
             <div className="text-sm text-gray-500">Complete</div>
           </div>
@@ -167,7 +178,7 @@ export default function RoadmapView() {
       <div className="space-y-6">
         {roadmap.branches.map((branch) => {
           const branchProgress = calculateBranchProgress(branch);
-          
+
           return (
             <div
               key={branch.id}
@@ -205,36 +216,43 @@ export default function RoadmapView() {
               <div className="space-y-3">
                 {branch.videos.map((module) => {
                   const isCompleted = isModuleCompleted(module.id);
-                  
+
                   return (
                     <div
                       key={module.id}
                       className={`flex items-center justify-between p-4 rounded-lg border transition-all duration-200 hover:shadow-md ${
                         isCompleted
-                          ? 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800'
-                          : 'bg-gray-50 dark:bg-gray-700 border-gray-200 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-600'
+                          ? "bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800"
+                          : "bg-gray-50 dark:bg-gray-700 border-gray-200 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-600"
                       }`}
                     >
                       <div className="flex items-center space-x-4">
-                        <div className={`flex-shrink-0 ${isCompleted ? 'text-green-600' : 'text-gray-400'}`}>
+                        <div
+                          className={`flex-shrink-0 ${isCompleted ? "text-green-600" : "text-gray-400"}`}
+                        >
                           {isCompleted ? (
                             <CheckCircle className="h-6 w-6" />
                           ) : (
                             <Play className="h-6 w-6" />
                           )}
                         </div>
-                        
+
                         <div>
                           <div className="flex items-center space-x-2">
-                            <h3 className={`font-medium ${
-                              isCompleted 
-                                ? 'text-green-800 dark:text-green-200' 
-                                : 'text-gray-900 dark:text-white'
-                            }`}>
+                            <h3
+                              className={`font-medium ${
+                                isCompleted
+                                  ? "text-green-800 dark:text-green-200"
+                                  : "text-gray-900 dark:text-white"
+                              }`}
+                            >
                               {module.title}
                             </h3>
                             {module.isCore && (
-                              <Award className="h-4 w-4 text-yellow-500" title="Core module" />
+                              <Award
+                                className="h-4 w-4 text-yellow-500"
+                                title="Core module"
+                              />
                             )}
                           </div>
                           <div className="flex items-center space-x-3 text-sm text-gray-500">
@@ -251,20 +269,22 @@ export default function RoadmapView() {
                       <div className="flex items-center space-x-2">
                         {!isCompleted && (
                           <button
-                            onClick={() => markModuleComplete(module.id, branch.id)}
+                            onClick={() =>
+                              markModuleComplete(module.id, branch.id)
+                            }
                             className="px-3 py-1 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors text-sm"
                           >
                             Mark Complete
                           </button>
                         )}
-                        
+
                         <button
                           onClick={() => setSelectedModule(module)}
                           className="px-3 py-1 bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-200 rounded-md hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors text-sm"
                         >
                           View
                         </button>
-                        
+
                         <button className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200">
                           <Calendar className="h-4 w-4" />
                         </button>
@@ -291,12 +311,22 @@ export default function RoadmapView() {
                   onClick={() => setSelectedModule(null)}
                   className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"
                 >
-                  <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  <svg
+                    className="h-6 w-6"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
                   </svg>
                 </button>
               </div>
-              
+
               <div className="space-y-4">
                 <div className="aspect-video bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center">
                   {selectedModule.videoUrl ? (
@@ -312,9 +342,11 @@ export default function RoadmapView() {
                     </div>
                   )}
                 </div>
-                
+
                 <div className="flex items-center justify-between text-sm text-gray-500">
-                  <span>Duration: {formatDuration(selectedModule.duration)}</span>
+                  <span>
+                    Duration: {formatDuration(selectedModule.duration)}
+                  </span>
                   {selectedModule.isCore && (
                     <span className="px-2 py-1 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-200 rounded-full">
                       Core Module

@@ -1,16 +1,16 @@
-import { useState } from 'react'
-import { useQuery, useMutation } from '@tanstack/react-query'
-import { FileText, Download, User } from 'lucide-react'
-import { userApi, aiApi } from '@/lib/api'
+import { useState } from "react";
+import { useQuery, useMutation } from "@tanstack/react-query";
+import { FileText, Download, User } from "lucide-react";
+import { userApi, aiApi } from "@/lib/api";
 
 export default function Resume() {
-  const [selectedUserId, setSelectedUserId] = useState<number | null>(null)
-  const [generatedResume, setGeneratedResume] = useState<any>(null)
+  const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
+  const [generatedResume, setGeneratedResume] = useState<any>(null);
 
   const { data: users = [] } = useQuery({
-    queryKey: ['users'],
+    queryKey: ["users"],
     queryFn: () => userApi.getAll().then((res: { data: any }) => res.data),
-  })
+  });
 
   const generateMutation = useMutation({
     mutationFn: (userId: number) => aiApi.generateResume(userId),
@@ -18,34 +18,37 @@ export default function Resume() {
       // In a real app, this would return the actual resume data
       setGeneratedResume({
         userId: selectedUserId,
-        status: 'generated',
+        status: "generated",
         createdAt: new Date().toISOString(),
-        downloadUrl: '#'
-      })
+        downloadUrl: "#",
+      });
     },
-  })
+  });
 
   const handleGenerate = () => {
     if (selectedUserId) {
-      generateMutation.mutate(selectedUserId)
+      generateMutation.mutate(selectedUserId);
     }
-  }
+  };
 
   interface User {
-    id: number
-    full_name: string
-    username: string
-    email: string
-    bio?: string
+    id: number;
+    full_name: string;
+    username: string;
+    email: string;
+    bio?: string;
   }
 
-
-  const selectedUser: User | undefined = users.find((u: User) => u.id === selectedUserId)
+  const selectedUser: User | undefined = users.find(
+    (u: User) => u.id === selectedUserId,
+  );
 
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Resume Builder</h1>
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+          Resume Builder
+        </h1>
         <p className="mt-2 text-gray-600 dark:text-gray-300">
           Generate AI-powered resumes based on user profiles and projects
         </p>
@@ -57,7 +60,7 @@ export default function Resume() {
           <h2 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
             Select User
           </h2>
-          
+
           <div className="space-y-3">
             {users.map((user: User) => (
               <div
@@ -65,8 +68,8 @@ export default function Resume() {
                 onClick={() => setSelectedUserId(user.id)}
                 className={`p-4 border-2 rounded-lg cursor-pointer transition-colors ${
                   selectedUserId === user.id
-                    ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
-                    : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
+                    ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20"
+                    : "border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600"
                 }`}
               >
                 <div className="flex items-start space-x-3">
@@ -101,7 +104,9 @@ export default function Resume() {
                 className="w-full inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
               >
                 <FileText className="h-4 w-4 mr-2" />
-                {generateMutation.isPending ? 'Generating...' : 'Generate Resume'}
+                {generateMutation.isPending
+                  ? "Generating..."
+                  : "Generate Resume"}
               </button>
             </div>
           )}
@@ -151,15 +156,23 @@ export default function Resume() {
                       Resume Generated Successfully
                     </h3>
                     <div className="mt-2 text-sm text-green-700 dark:text-green-300">
-                      <p>Resume for {selectedUser.full_name} has been generated using AI.</p>
-                      <p className="mt-1">Generated at: {new Date(generatedResume.createdAt).toLocaleString()}</p>
+                      <p>
+                        Resume for {selectedUser.full_name} has been generated
+                        using AI.
+                      </p>
+                      <p className="mt-1">
+                        Generated at:{" "}
+                        {new Date(generatedResume.createdAt).toLocaleString()}
+                      </p>
                     </div>
                   </div>
                 </div>
               </div>
 
               <div className="border border-gray-200 dark:border-gray-600 rounded-lg p-4">
-                <h4 className="font-medium text-gray-900 dark:text-white mb-2">Resume Contents:</h4>
+                <h4 className="font-medium text-gray-900 dark:text-white mb-2">
+                  Resume Contents:
+                </h4>
                 <ul className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
                   <li>• Personal Information & Contact Details</li>
                   <li>• Professional Summary</li>
@@ -170,9 +183,7 @@ export default function Resume() {
                 </ul>
               </div>
 
-              <button
-                className="w-full inline-flex justify-center items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md shadow-sm text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600"
-              >
+              <button className="w-full inline-flex justify-center items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md shadow-sm text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600">
                 <Download className="h-4 w-4 mr-2" />
                 Download Resume PDF
               </button>
@@ -181,5 +192,5 @@ export default function Resume() {
         </div>
       </div>
     </div>
-  )
+  );
 }

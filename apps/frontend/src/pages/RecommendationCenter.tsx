@@ -1,16 +1,16 @@
-import { useState } from 'react';
-import axios from 'axios';
-import { 
-  Lightbulb, 
-  Target, 
-  FileText, 
+import { useState } from "react";
+import axios from "axios";
+import {
+  Lightbulb,
+  Target,
+  FileText,
   Brain,
   Plus,
   Clock,
   Star,
   CheckCircle,
-  TrendingUp
-} from 'lucide-react';
+  TrendingUp,
+} from "lucide-react";
 
 interface RecommendedModule {
   title: string;
@@ -39,56 +39,72 @@ interface Recommendation {
 }
 
 export default function RecommendationCenter() {
-  const [activeMode, setActiveMode] = useState<'gap' | 'resume' | 'interest'>('gap');
-  const [jobDescription, setJobDescription] = useState('');
-  const [resume, setResume] = useState('');
+  const [activeMode, setActiveMode] = useState<"gap" | "resume" | "interest">(
+    "gap",
+  );
+  const [jobDescription, setJobDescription] = useState("");
+  const [resume, setResume] = useState("");
   const [interests, setInterests] = useState<string[]>([]);
-  const [newInterest, setNewInterest] = useState('');
-  const [recommendations, setRecommendations] = useState<Recommendation | null>(null);
+  const [newInterest, setNewInterest] = useState("");
+  const [recommendations, setRecommendations] = useState<Recommendation | null>(
+    null,
+  );
   const [loading, setLoading] = useState(false);
 
   const modes = [
     {
-      id: 'gap' as const,
-      name: 'Gap Analysis',
+      id: "gap" as const,
+      name: "Gap Analysis",
       icon: Target,
-      description: 'Analyze skills needed for target job roles',
-      color: 'bg-blue-500 hover:bg-blue-600',
-      detail: 'Compare your current skills with job requirements to identify learning gaps.',
+      description: "Analyze skills needed for target job roles",
+      color: "bg-blue-500 hover:bg-blue-600",
+      detail:
+        "Compare your current skills with job requirements to identify learning gaps.",
     },
     {
-      id: 'resume' as const,
-      name: 'Resume Enhancement',
+      id: "resume" as const,
+      name: "Resume Enhancement",
       icon: FileText,
-      description: 'Suggest improvements to enhance your profile',
-      color: 'bg-green-500 hover:bg-green-600',
-      detail: 'Get suggestions to strengthen your resume and professional profile.',
+      description: "Suggest improvements to enhance your profile",
+      color: "bg-green-500 hover:bg-green-600",
+      detail:
+        "Get suggestions to strengthen your resume and professional profile.",
     },
     {
-      id: 'interest' as const,
-      name: 'Interest-Based',
+      id: "interest" as const,
+      name: "Interest-Based",
       icon: Brain,
-      description: 'Personalized paths from your interests',
-      color: 'bg-purple-500 hover:bg-purple-600',
-      detail: 'Discover learning paths based on your interests and career goals.',
+      description: "Personalized paths from your interests",
+      color: "bg-purple-500 hover:bg-purple-600",
+      detail:
+        "Discover learning paths based on your interests and career goals.",
     },
   ];
 
   const commonInterests = [
-    'Machine Learning', 'Data Science', 'Web Development', 'Mobile Development',
-    'Cloud Computing', 'DevOps', 'Cybersecurity', 'UI/UX Design',
-    'Blockchain', 'AI/ML', 'System Design', 'Leadership'
+    "Machine Learning",
+    "Data Science",
+    "Web Development",
+    "Mobile Development",
+    "Cloud Computing",
+    "DevOps",
+    "Cybersecurity",
+    "UI/UX Design",
+    "Blockchain",
+    "AI/ML",
+    "System Design",
+    "Leadership",
   ];
 
   const addInterest = () => {
     if (newInterest && !interests.includes(newInterest)) {
       setInterests([...interests, newInterest]);
-      setNewInterest('');
+      setNewInterest("");
     }
   };
 
   const removeInterest = (interest: string) => {
-    setInterests(interests.filter(i => i !== interest));
+    setInterests(interests.filter((i) => i !== interest));
   };
 
   const addCommonInterest = (interest: string) => {
@@ -102,18 +118,21 @@ export default function RecommendationCenter() {
       setLoading(true);
       const requestData: any = { mode: activeMode };
 
-      if (activeMode === 'gap' && jobDescription) {
+      if (activeMode === "gap" && jobDescription) {
         requestData.target_job_description = jobDescription;
-      } else if (activeMode === 'resume' && resume) {
+      } else if (activeMode === "resume" && resume) {
         requestData.existing_resume = resume;
-      } else if (activeMode === 'interest') {
+      } else if (activeMode === "interest") {
         requestData.skill_interests = interests;
       }
 
-      const response = await axios.post('/api/v1/roadmap/recommend', requestData);
+      const response = await axios.post(
+        "/api/v1/roadmap/recommend",
+        requestData,
+      );
       setRecommendations(response.data);
     } catch (error) {
-      console.error('Error generating recommendations:', error);
+      console.error("Error generating recommendations:", error);
     } finally {
       setLoading(false);
     }
@@ -130,20 +149,24 @@ export default function RecommendationCenter() {
 
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty.toLowerCase()) {
-      case 'beginner': return 'text-green-600 bg-green-100 dark:bg-green-900/30';
-      case 'intermediate': return 'text-yellow-600 bg-yellow-100 dark:bg-yellow-900/30';
-      case 'advanced': return 'text-red-600 bg-red-100 dark:bg-red-900/30';
-      default: return 'text-gray-600 bg-gray-100 dark:bg-gray-900/30';
+      case "beginner":
+        return "text-green-600 bg-green-100 dark:bg-green-900/30";
+      case "intermediate":
+        return "text-yellow-600 bg-yellow-100 dark:bg-yellow-900/30";
+      case "advanced":
+        return "text-red-600 bg-red-100 dark:bg-red-900/30";
+      default:
+        return "text-gray-600 bg-gray-100 dark:bg-gray-900/30";
     }
   };
 
   const addToRoadmap = async (branchId: string) => {
     try {
       // This would integrate with the roadmap creation API
-      console.log('Adding branch to roadmap:', branchId);
+      console.log("Adding branch to roadmap:", branchId);
       // Show success message
     } catch (error) {
-      console.error('Error adding to roadmap:', error);
+      console.error("Error adding to roadmap:", error);
     }
   };
 
@@ -164,15 +187,15 @@ export default function RecommendationCenter() {
         {modes.map((mode) => {
           const Icon = mode.icon;
           const isActive = activeMode === mode.id;
-          
+
           return (
             <button
               key={mode.id}
               onClick={() => setActiveMode(mode.id)}
               className={`text-left p-6 rounded-lg border-2 transition-all duration-200 ${
                 isActive
-                  ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
-                  : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
+                  ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20"
+                  : "border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600"
               }`}
             >
               <div className="flex items-start space-x-4">
@@ -199,10 +222,10 @@ export default function RecommendationCenter() {
       {/* Input Section */}
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
         <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-          Get Recommendations - {modes.find(m => m.id === activeMode)?.name}
+          Get Recommendations - {modes.find((m) => m.id === activeMode)?.name}
         </h2>
 
-        {activeMode === 'gap' && (
+        {activeMode === "gap" && (
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               Job Description
@@ -217,7 +240,7 @@ export default function RecommendationCenter() {
           </div>
         )}
 
-        {activeMode === 'resume' && (
+        {activeMode === "resume" && (
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               Current Resume
@@ -232,7 +255,7 @@ export default function RecommendationCenter() {
           </div>
         )}
 
-        {activeMode === 'interest' && (
+        {activeMode === "interest" && (
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -243,7 +266,7 @@ export default function RecommendationCenter() {
                   type="text"
                   value={newInterest}
                   onChange={(e) => setNewInterest(e.target.value)}
-                  onKeyPress={(e) => e.key === 'Enter' && addInterest()}
+                  onKeyPress={(e) => e.key === "Enter" && addInterest()}
                   className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
                   placeholder="Add an interest..."
                 />
@@ -255,7 +278,7 @@ export default function RecommendationCenter() {
                   <span>Add</span>
                 </button>
               </div>
-              
+
               {interests.length > 0 && (
                 <div className="flex flex-wrap gap-2 mb-4">
                   {interests.map((interest) => (
@@ -287,8 +310,8 @@ export default function RecommendationCenter() {
                       disabled={interests.includes(interest)}
                       className={`px-3 py-1 text-sm rounded-full border transition-colors ${
                         interests.includes(interest)
-                          ? 'bg-gray-100 dark:bg-gray-700 text-gray-400 cursor-not-allowed'
-                          : 'border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
+                          ? "bg-gray-100 dark:bg-gray-700 text-gray-400 cursor-not-allowed"
+                          : "border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
                       }`}
                     >
                       {interest}
@@ -302,7 +325,11 @@ export default function RecommendationCenter() {
 
         <button
           onClick={generateRecommendations}
-          disabled={loading || (activeMode === 'gap' && !jobDescription) || (activeMode === 'resume' && !resume)}
+          disabled={
+            loading ||
+            (activeMode === "gap" && !jobDescription) ||
+            (activeMode === "resume" && !resume)
+          }
           className="mt-4 px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
         >
           {loading ? (
@@ -331,7 +358,8 @@ export default function RecommendationCenter() {
               <div className="flex items-center space-x-2">
                 <Star className="h-5 w-5 text-yellow-500" />
                 <span className="font-semibold text-gray-900 dark:text-white">
-                  {Math.round(recommendations.confidenceScore * 100)}% Confidence
+                  {Math.round(recommendations.confidenceScore * 100)}%
+                  Confidence
                 </span>
               </div>
             </div>
@@ -345,7 +373,7 @@ export default function RecommendationCenter() {
             <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
               Recommended Learning Paths
             </h2>
-            
+
             {recommendations.recommendations.map((branch) => (
               <div
                 key={branch.id}
@@ -364,7 +392,9 @@ export default function RecommendationCenter() {
                         <Clock className="h-4 w-4 mr-1" />
                         <span>{formatDuration(branch.estimatedDuration)}</span>
                       </div>
-                      <span className={`px-2 py-1 rounded-full text-xs ${getDifficultyColor(branch.difficulty)}`}>
+                      <span
+                        className={`px-2 py-1 rounded-full text-xs ${getDifficultyColor(branch.difficulty)}`}
+                      >
                         {branch.difficulty}
                       </span>
                     </div>
@@ -415,7 +445,9 @@ export default function RecommendationCenter() {
                       </div>
                       <div className="flex items-center space-x-3 text-sm text-gray-500">
                         <span>{formatDuration(module.duration)}</span>
-                        <span className={`px-2 py-1 rounded-full text-xs ${getDifficultyColor(module.difficulty)}`}>
+                        <span
+                          className={`px-2 py-1 rounded-full text-xs ${getDifficultyColor(module.difficulty)}`}
+                        >
                           {module.difficulty}
                         </span>
                       </div>
@@ -467,7 +499,8 @@ export default function RecommendationCenter() {
             Ready for Recommendations
           </h3>
           <p className="text-gray-600 dark:text-gray-400 mt-2">
-            Choose a mode above and provide the required information to get personalized learning recommendations.
+            Choose a mode above and provide the required information to get
+            personalized learning recommendations.
           </p>
         </div>
       )}

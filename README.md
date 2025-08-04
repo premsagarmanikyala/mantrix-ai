@@ -5,6 +5,7 @@ A comprehensive full-stack monorepo scaffold with FastAPI backend and React Type
 ## 🏗️ Architecture
 
 ### Tech Stack
+
 - **Backend**: FastAPI with Python 3.11, SQLAlchemy, Pydantic
 - **Frontend**: React 18 with TypeScript, Tailwind CSS, React Query
 - **Database**: PostgreSQL (configurable)
@@ -12,6 +13,7 @@ A comprehensive full-stack monorepo scaffold with FastAPI backend and React Type
 - **AI Services**: Resume builder and roadmap generation engines
 
 ### Project Structure
+
 ```
 mantrix/
 ├── apps/
@@ -43,6 +45,7 @@ mantrix/
 ## 🚀 Quick Start
 
 ### Prerequisites
+
 - Python 3.11+
 - Node.js 18+
 - Docker & Docker Compose (for containerized setup)
@@ -50,6 +53,7 @@ mantrix/
 ### Option 1: Local Development
 
 #### Backend Setup
+
 ```bash
 cd apps/backend
 
@@ -68,6 +72,7 @@ python main.py
 ```
 
 #### Frontend Setup
+
 ```bash
 cd apps/frontend
 
@@ -100,6 +105,7 @@ docker-compose logs -f
 ## 🌐 API Documentation
 
 Once the backend is running, visit:
+
 - API Documentation: `http://localhost:8000/docs`
 - Alternative API Docs: `http://localhost:8000/redoc`
 
@@ -108,6 +114,7 @@ Once the backend is running, visit:
 ### Backend Development
 
 #### Available Scripts
+
 ```bash
 # Run tests
 pytest tests/ -v
@@ -124,6 +131,7 @@ mypy .
 ```
 
 #### Adding New Routes
+
 1. Create route handlers in `apps/backend/api/routes.py`
 2. Add Pydantic models in `apps/backend/models/schemas.py`
 3. Implement business logic in `apps/backend/services/`
@@ -132,6 +140,7 @@ mypy .
 ### Frontend Development
 
 #### Available Scripts
+
 ```bash
 # Development server
 npm run dev
@@ -150,6 +159,7 @@ npm run type-check
 ```
 
 #### Adding New Pages
+
 1. Create component in `apps/frontend/src/pages/`
 2. Add route in `apps/frontend/src/App.tsx`
 3. Update navigation in `apps/frontend/src/components/Layout.tsx`
@@ -157,18 +167,21 @@ npm run type-check
 ## 🧪 Testing
 
 ### Backend Tests
+
 ```bash
 cd apps/backend
 pytest tests/ -v --cov=.
 ```
 
 ### Frontend Tests
+
 ```bash
 cd apps/frontend
 npm test
 ```
 
 ### Integration Tests
+
 ```bash
 # Using Docker Compose
 docker-compose -f infra/docker-compose.yml -f infra/docker-compose.test.yml up --abort-on-container-exit
@@ -177,6 +190,7 @@ docker-compose -f infra/docker-compose.yml -f infra/docker-compose.test.yml up -
 ## 🚢 Deployment
 
 ### Using Docker
+
 ```bash
 # Build images
 docker-compose -f infra/docker-compose.yml build
@@ -214,12 +228,14 @@ AWS_SECRET_ACCESS_KEY=your-aws-secret
 ## 🤖 AI Features
 
 ### Resume Builder
+
 - Generate professional resumes using AI
 - Extract skills from user projects
 - Multiple template styles
 - PDF export functionality
 
 ### Roadmap Engine
+
 - Create personalized learning roadmaps
 - Skill level assessment
 - Time-based milestone planning
@@ -228,6 +244,7 @@ AWS_SECRET_ACCESS_KEY=your-aws-secret
 ## 📚 API Endpoints
 
 ### Users
+
 - `GET /api/v1/users` - Get all users
 - `POST /api/v1/users` - Create user
 - `GET /api/v1/users/{id}` - Get user by ID
@@ -235,6 +252,7 @@ AWS_SECRET_ACCESS_KEY=your-aws-secret
 - `DELETE /api/v1/users/{id}` - Delete user
 
 ### Projects
+
 - `GET /api/v1/projects` - Get all projects
 - `POST /api/v1/projects` - Create project
 - `GET /api/v1/projects/{id}` - Get project by ID
@@ -242,6 +260,7 @@ AWS_SECRET_ACCESS_KEY=your-aws-secret
 - `DELETE /api/v1/projects/{id}` - Delete project
 
 ### AI Services
+
 - `POST /api/v1/resume/generate` - Generate resume
 - `POST /api/v1/roadmap/generate` - Generate roadmap
 

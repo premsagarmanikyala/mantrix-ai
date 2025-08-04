@@ -1,31 +1,31 @@
-import { useState } from 'react'
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { Plus, Edit, Trash2 } from 'lucide-react'
+import { useState } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { Plus, Edit, Trash2 } from "lucide-react";
 // Make sure userApi is exported from '@/lib/api', or adjust the import to match the actual export.
 // For example, if it's exported as 'usersApi', update the import:
 // Adjust the import to match the actual exports from '@/lib/api'.
 // For example, if the types are exported as 'UserType' and 'UserCreateType':
 // Make sure userApi has a delete method, or import the correct API
 // Import userApi and ensure it has a 'create' method for creating users
-import { userApi } from '@/lib/api'
+import { userApi } from "@/lib/api";
 // If userApi does not have a 'create' method, you need to add it in '@/lib/api' or import the correct API that does.
 // If your API uses a different method name, such as 'remove', import and use that instead
 // import { usersApi } from '@/lib/api'
 // If your types are in 'src/lib/types.ts', use the correct relative path:
 type User = {
-  id: string | number
-  email: string
-  username: string
-  full_name: string
-  bio?: string
-}
+  id: string | number;
+  email: string;
+  username: string;
+  full_name: string;
+  bio?: string;
+};
 
 type UserCreate = {
-  email: string
-  username: string
-  full_name: string
-  bio?: string
-}
+  email: string;
+  username: string;
+  full_name: string;
+  bio?: string;
+};
 
 // Or, if you don't have a types file, define them here:
 //
@@ -48,53 +48,61 @@ type UserCreate = {
 // import userApi, { type User, type UserCreate } from '@/lib/api'
 
 export default function Users() {
-  const [showCreateForm, setShowCreateForm] = useState(false)
-  const queryClient = useQueryClient()
+  const [showCreateForm, setShowCreateForm] = useState(false);
+  const queryClient = useQueryClient();
   // Removed unused editingUser state
   const { data: users = [], isLoading } = useQuery({
-    queryKey: ['users'],
+    queryKey: ["users"],
     queryFn: () => userApi.me().then((res: { data: User[] }) => res.data),
-  })
+  });
 
   // Replace 'userApi.create' with the correct method for creating a user.
   // For example, if your API uses 'userApi.add' or 'userApi.register', use that.
   // Here is a fallback example:
   const createMutation = useMutation({
-    mutationFn: (payload: { data: UserCreate }) => userApi.add ? userApi.add(payload.data) : Promise.reject(new Error('Create method not found')),
+    mutationFn: (payload: { data: UserCreate }) =>
+      userApi.add
+        ? userApi.add(payload.data)
+        : Promise.reject(new Error("Create method not found")),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['users'] })
-      setShowCreateForm(false)
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+      setShowCreateForm(false);
     },
-  })
+  });
 
   // Use the correct method name for deleting a user from your API
   const deleteMutation = useMutation({
-    mutationFn: (id: string | number) => userApi.remove ? userApi.remove(id) : Promise.reject(new Error('Delete method not found')),
+    mutationFn: (id: string | number) =>
+      userApi.remove
+        ? userApi.remove(id)
+        : Promise.reject(new Error("Delete method not found")),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['users'] })
+      queryClient.invalidateQueries({ queryKey: ["users"] });
     },
-  })
+  });
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    const formData = new FormData(e.currentTarget)
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
     const userData: UserCreate = {
-      email: formData.get('email') as string,
-      username: formData.get('username') as string,
-      full_name: formData.get('full_name') as string,
-      bio: formData.get('bio') as string || undefined,
-    }
-    createMutation.mutate({ data: userData })
-  }
+      email: formData.get("email") as string,
+      username: formData.get("username") as string,
+      full_name: formData.get("full_name") as string,
+      bio: (formData.get("bio") as string) || undefined,
+    };
+    createMutation.mutate({ data: userData });
+  };
 
   if (isLoading) {
-    return <div className="text-center py-8">Loading users...</div>
+    return <div className="text-center py-8">Loading users...</div>;
   }
 
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Users</h1>
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+          Users
+        </h1>
         <button
           onClick={() => setShowCreateForm(true)}
           className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
@@ -106,11 +114,16 @@ export default function Users() {
 
       {showCreateForm && (
         <div className="bg-white dark:bg-gray-800 shadow rounded-lg p-6">
-          <h2 className="text-lg font-medium text-gray-900 dark:text-white mb-4">Create New User</h2>
+          <h2 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
+            Create New User
+          </h2>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                >
                   Email
                 </label>
                 <input
@@ -122,7 +135,10 @@ export default function Users() {
                 />
               </div>
               <div>
-                <label htmlFor="username" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                <label
+                  htmlFor="username"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                >
                   Username
                 </label>
                 <input
@@ -135,7 +151,10 @@ export default function Users() {
               </div>
             </div>
             <div>
-              <label htmlFor="full_name" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              <label
+                htmlFor="full_name"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+              >
                 Full Name
               </label>
               <input
@@ -147,7 +166,10 @@ export default function Users() {
               />
             </div>
             <div>
-              <label htmlFor="bio" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              <label
+                htmlFor="bio"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+              >
                 Bio
               </label>
               <textarea
@@ -170,7 +192,7 @@ export default function Users() {
                 disabled={createMutation.isPending}
                 className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
               >
-                {createMutation.isPending ? 'Creating...' : 'Create User'}
+                {createMutation.isPending ? "Creating..." : "Create User"}
               </button>
             </div>
           </form>
@@ -225,5 +247,5 @@ export default function Users() {
         </ul>
       </div>
     </div>
-  )
+  );
 }

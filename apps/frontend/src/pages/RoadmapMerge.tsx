@@ -1,3 +1,4 @@
+import { useToast } from "@/hooks/use-toast";
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -7,7 +8,6 @@ import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
-import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { 
   Merge, 
@@ -20,10 +20,8 @@ import {
   Star,
   Eye,
   Plus,
-  Minus,
   Shuffle
 } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
 
 interface MergeableRoadmap {
   id: string;
@@ -266,14 +264,26 @@ const RoadmapMerge: React.FC = () => {
         </div>
       </div>
 
-      <Tabs defaultValue="select" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-3">
+      <Tabs defaultValue="select">
+        <TabsList>
           <TabsTrigger value="select">Select & Configure</TabsTrigger>
-          <TabsTrigger value="preview" disabled={!mergePreview}>Preview & Merge</TabsTrigger>
-          <TabsTrigger value="result" disabled={!mergedRoadmap}>Result & Timeline</TabsTrigger>
+          {mergePreview ? (
+            <TabsTrigger value="preview">Preview & Merge</TabsTrigger>
+          ) : (
+            <span className="px-4 py-2 rounded-md text-muted-foreground bg-muted cursor-not-allowed select-none">
+              Preview & Merge
+            </span>
+          )}
+          {mergedRoadmap ? (
+            <TabsTrigger value="result">Result & Timeline</TabsTrigger>
+          ) : (
+            <span className="px-4 py-2 rounded-md text-muted-foreground bg-muted cursor-not-allowed select-none">
+              Result & Timeline
+            </span>
+          )}
         </TabsList>
 
-        <TabsContent value="select" className="space-y-6">
+        <TabsContent value="select">
           {/* Roadmap Selection */}
           <Card>
             <CardHeader>
@@ -407,7 +417,7 @@ const RoadmapMerge: React.FC = () => {
           </Card>
         </TabsContent>
 
-        <TabsContent value="preview" className="space-y-6">
+        <TabsContent value="preview">
           {mergePreview && (
             <>
               {/* Preview Statistics */}
@@ -481,7 +491,7 @@ const RoadmapMerge: React.FC = () => {
                     ))}
                   </div>
 
-                  <Separator className="my-6" />
+                  <Separator />
 
                   <div className="flex justify-center">
                     <Button 
@@ -500,7 +510,7 @@ const RoadmapMerge: React.FC = () => {
           )}
         </TabsContent>
 
-        <TabsContent value="result" className="space-y-6">
+        <TabsContent value="result">
           {mergedRoadmap && (
             <>
               {/* Success Message */}

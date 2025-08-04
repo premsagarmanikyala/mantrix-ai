@@ -5,7 +5,6 @@ import {
   CheckCircle, 
   Clock, 
   Play, 
-  Star, 
   Calendar,
   BookOpen,
   Award

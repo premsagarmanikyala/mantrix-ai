@@ -1,7 +1,16 @@
 import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { Plus, Edit, Trash2, Circle } from 'lucide-react'
-import { projectApi, userApi, type Project, type ProjectCreate } from '@/lib/api'
+import { projectApi, userApi, type ProjectCreate } from '../lib/api'
+
+interface Project {
+  id: number
+  title: string
+  description?: string
+  status: string
+  priority: string
+  owner_id: number
+}
 
 export default function Projects() {
   const [showCreateForm, setShowCreateForm] = useState(false)
@@ -9,12 +18,12 @@ export default function Projects() {
 
   const { data: projects = [], isLoading } = useQuery({
     queryKey: ['projects'],
-    queryFn: () => projectApi.getAll().then(res => res.data),
+    queryFn: () => projectApi.getAll().then((res: { data: any }) => res.data),
   })
 
   const { data: users = [] } = useQuery({
     queryKey: ['users'],
-    queryFn: () => userApi.getAll().then(res => res.data),
+    queryFn: () => userApi.getAll().then((res: { data: any }) => res.data),
   })
 
   const createMutation = useMutation({
@@ -42,7 +51,7 @@ export default function Projects() {
       priority: formData.get('priority') as string,
       owner_id: parseInt(formData.get('owner_id') as string),
     }
-    createMutation.mutate({ data: projectData })
+    createMutation.mutate(projectData)
   }
 
   const getStatusColor = (status: string) => {
@@ -149,7 +158,7 @@ export default function Projects() {
                   className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                 >
                   <option value="">Select owner...</option>
-                  {users.map((user) => (
+                  {users.map((user: { id: number; full_name: string }) => (
                     <option key={user.id} value={user.id}>
                       {user.full_name}
                     </option>
@@ -170,7 +179,7 @@ export default function Projects() {
                 disabled={createMutation.isPending}
                 className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
               >
-                {createMutation.isPending ? 'Creating...' : 'Create Project'}
+                Create
               </button>
             </div>
           </form>
@@ -178,8 +187,8 @@ export default function Projects() {
       )}
 
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {projects.map((project) => {
-          const owner = users.find(u => u.id === project.owner_id)
+        {projects.map((project: Project) => {
+          const owner = users.find((u: { id: number; full_name: string }) => u.id === project.owner_id)
           return (
             <div key={project.id} className="bg-white dark:bg-gray-800 overflow-hidden shadow rounded-lg">
               <div className="p-6">

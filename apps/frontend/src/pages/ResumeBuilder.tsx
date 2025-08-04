@@ -7,7 +7,6 @@ import {
   Download, 
   Eye,
   Edit3,
-  Star,
   AlertCircle,
   CheckCircle
 } from 'lucide-react';

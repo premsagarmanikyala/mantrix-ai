@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
 import { 
   Lightbulb, 
@@ -9,7 +9,6 @@ import {
   Clock,
   Star,
   CheckCircle,
-  ArrowRight,
   TrendingUp
 } from 'lucide-react';
 
@@ -347,7 +346,7 @@ export default function RecommendationCenter() {
               Recommended Learning Paths
             </h2>
             
-            {recommendations.recommendations.map((branch, index) => (
+            {recommendations.recommendations.map((branch) => (
               <div
                 key={branch.id}
                 className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6"

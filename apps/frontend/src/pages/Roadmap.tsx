@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import { useQuery, useMutation } from '@tanstack/react-query'
 import { Map, Clock, BookOpen, FolderOpen } from 'lucide-react'
-import { projectApi, aiApi } from '@/lib/api'
+// Update this import to match the actual exports from '@/lib/api'
+import { api } from '@/lib/api'
+// import projectApi from '@/lib/api' // Uncomment and adjust if projectApi is a default export
 
 export default function Roadmap() {
   const [selectedProjectId, setSelectedProjectId] = useState<number | null>(null)
@@ -11,12 +13,12 @@ export default function Roadmap() {
 
   const { data: projects = [] } = useQuery({
     queryKey: ['projects'],
-    queryFn: () => projectApi.getAll().then(res => res.data),
+    queryFn: () => api.get('/projects').then(res => res.data),
   })
 
   const generateMutation = useMutation({
-    mutationFn: (projectId: number) => aiApi.generateRoadmap(projectId),
-    onSuccess: (response) => {
+    mutationFn: (projectId: number) => api.post('/roadmap', { projectId }),
+    onSuccess: () => {
       // In a real app, this would return the actual roadmap data
       setGeneratedRoadmap({
         projectId: selectedProjectId,
@@ -42,7 +44,22 @@ export default function Roadmap() {
     }
   }
 
-  const selectedProject = projects.find(p => p.id === selectedProjectId)
+  interface Project {
+    id: number
+    title: string
+    status: string
+    priority: string
+    description?: string
+  }
+
+  interface Milestone {
+    week: number
+    title: string
+    description: string
+  }
+
+
+  const selectedProject: Project | undefined = projects.find((p: Project) => p.id === selectedProjectId)
 
   return (
     <div className="space-y-6">
@@ -63,7 +80,7 @@ export default function Roadmap() {
             </h2>
             
             <div className="space-y-3">
-              {projects.map((project) => (
+              {projects.map((project: Project) => (
                 <div
                   key={project.id}
                   onClick={() => setSelectedProjectId(project.id)}

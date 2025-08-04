@@ -2,6 +2,9 @@
 Mantrix FastAPI Application
 Main entry point for the backend API server.
 """
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware

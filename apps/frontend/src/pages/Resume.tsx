@@ -9,12 +9,12 @@ export default function Resume() {
 
   const { data: users = [] } = useQuery({
     queryKey: ['users'],
-    queryFn: () => userApi.getAll().then(res => res.data),
+    queryFn: () => userApi.getAll().then((res: { data: any }) => res.data),
   })
 
   const generateMutation = useMutation({
     mutationFn: (userId: number) => aiApi.generateResume(userId),
-    onSuccess: (response) => {
+    onSuccess: () => {
       // In a real app, this would return the actual resume data
       setGeneratedResume({
         userId: selectedUserId,
@@ -31,7 +31,16 @@ export default function Resume() {
     }
   }
 
-  const selectedUser = users.find(u => u.id === selectedUserId)
+  interface User {
+    id: number
+    full_name: string
+    username: string
+    email: string
+    bio?: string
+  }
+
+
+  const selectedUser: User | undefined = users.find((u: User) => u.id === selectedUserId)
 
   return (
     <div className="space-y-6">
@@ -50,7 +59,7 @@ export default function Resume() {
           </h2>
           
           <div className="space-y-3">
-            {users.map((user) => (
+            {users.map((user: User) => (
               <div
                 key={user.id}
                 onClick={() => setSelectedUserId(user.id)}

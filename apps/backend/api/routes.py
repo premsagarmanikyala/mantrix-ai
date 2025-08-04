@@ -19,6 +19,7 @@ from api.roadmap import roadmap_router
 from api.resume import resume_router
 from api.auth import auth_router
 from api.roadmap_merge import router as roadmap_merge_router
+from api.external_roadmap import external_roadmap_router
 
 api_router = APIRouter()
 
@@ -26,6 +27,7 @@ api_router = APIRouter()
 api_router.include_router(auth_router)  # Auth routes at /api/auth
 api_router.include_router(roadmap_router)  # Roadmap routes at /api/v1/roadmap
 api_router.include_router(roadmap_merge_router)  # Roadmap merge routes at /api/v1/roadmap/merge
+api_router.include_router(external_roadmap_router)  # External roadmap routes at /api/v1/external-roadmaps
 
 # User routes
 @api_router.get("/users", response_model=List[UserResponse])
@@ -159,5 +161,6 @@ def setup_routes():
     api_router.include_router(resume_router, prefix="/v1")
     api_router.include_router(progress_router, prefix="/v1")
     api_router.include_router(recommendation_router, prefix="/v1")
+    api_router.include_router(external_roadmap_router, prefix="/v1")
     
     return api_router

@@ -9,6 +9,7 @@ import ProgressTracker from "./pages/ProgressTracker";
 import ResumeBuilder from "./pages/ResumeBuilder";
 import RecommendationCenter from "./pages/RecommendationCenter";
 import RoadmapMerge from "./pages/RoadmapMerge";
+import ExternalRoadmapSearch from "./pages/ExternalRoadmapSearch";
 import { Toaster } from "react-hot-toast";
 
 function App() {
@@ -40,6 +41,7 @@ function App() {
           <Route path="/roadmap/view" element={<RoadmapView />} />
           <Route path="/roadmap/create" element={<RoadmapCreate />} />
           <Route path="/roadmap/merge" element={<RoadmapMerge />} />
+          <Route path="/roadmap/external" element={<ExternalRoadmapSearch />} />
           <Route path="/progress" element={<ProgressTracker />} />
           <Route path="/resume" element={<ResumeBuilder />} />
           <Route path="/recommendations" element={<RecommendationCenter />} />

@@ -8,6 +8,7 @@ import {
   Merge,
   LogOut,
   User,
+  Search,
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { cn } from "@/lib/utils";
@@ -20,6 +21,7 @@ const navigation = [
   { name: "Dashboard", href: "/", icon: Home },
   { name: "Roadmap View", href: "/roadmap/view", icon: Map },
   { name: "Merge Roadmaps", href: "/roadmap/merge", icon: Merge },
+  { name: "External Roadmaps", href: "/roadmap/external", icon: Search },
   { name: "Progress Tracker", href: "/progress", icon: BarChart3 },
   { name: "Resume Builder", href: "/resume", icon: FileText },
   { name: "Recommendations", href: "/recommendations", icon: Lightbulb },

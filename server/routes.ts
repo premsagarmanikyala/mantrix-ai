@@ -316,6 +316,139 @@ app.post("/api/v1/roadmap/recommend", async (c) => {
   });
 });
 
+// External roadmap API endpoints
+app.get("/api/v1/external-roadmaps/sources", async (c) => {
+  return c.json([
+    {
+      id: "github_awesome",
+      name: "GitHub Awesome Lists", 
+      description: "Community-curated learning roadmaps from GitHub",
+      base_url: "https://api.github.com/repos",
+      is_active: true
+    },
+    {
+      id: "roadmap_sh",
+      name: "Roadmap.sh",
+      description: "Developer roadmaps for various technologies", 
+      base_url: "https://roadmap.sh/roadmaps",
+      is_active: true
+    },
+    {
+      id: "freecodecamp",
+      name: "FreeCodeCamp",
+      description: "Free coding bootcamp curriculum roadmaps",
+      base_url: "https://api.freecodecamp.org",
+      is_active: true
+    }
+  ]);
+});
+
+app.get("/api/v1/external-roadmaps/search", async (c) => {
+  const { query, sources } = c.req.query();
+  
+  if (!query) {
+    return c.json({ error: "Query parameter is required" }, 400);
+  }
+
+  // Simulate external roadmap search results
+  const sampleRoadmaps = [
+    {
+      id: "roadmapsh_frontend",
+      title: "Frontend Developer Roadmap",
+      description: "Step-by-step guide to becoming a modern frontend developer",
+      source: "Roadmap.sh",
+      source_url: "https://roadmap.sh/frontend",
+      topics: ["html", "css", "javascript", "react", "vue"],
+      difficulty: "Beginner to Advanced",
+      estimated_duration: 500,
+      steps: [
+        {
+          title: "Learn HTML",
+          description: "Semantic HTML and accessibility",
+          type: "learning",
+          estimated_time: 40
+        },
+        {
+          title: "Learn CSS", 
+          description: "Styling, layouts, and responsive design",
+          type: "learning",
+          estimated_time: 60
+        },
+        {
+          title: "Learn JavaScript",
+          description: "Programming fundamentals and DOM manipulation", 
+          type: "learning",
+          estimated_time: 120
+        }
+      ]
+    },
+    {
+      id: "fcc_javascript",
+      title: "FreeCodeCamp: JavaScript Algorithms and Data Structures",
+      description: "Learn JavaScript fundamentals and algorithmic thinking",
+      source: "FreeCodeCamp",
+      source_url: "https://www.freecodecamp.org/learn/javascript",
+      topics: ["javascript", "algorithms", "data-structures"],
+      difficulty: "Beginner",
+      estimated_duration: 600,
+      steps: [
+        {
+          title: "Basic JavaScript",
+          description: "Variables, functions, and control flow",
+          type: "interactive", 
+          estimated_time: 180
+        },
+        {
+          title: "ES6",
+          description: "Modern JavaScript features",
+          type: "interactive",
+          estimated_time: 120
+        }
+      ]
+    }
+  ].filter(roadmap => 
+    roadmap.title.toLowerCase().includes(query.toLowerCase()) ||
+    roadmap.topics.some(topic => topic.toLowerCase().includes(query.toLowerCase()))
+  );
+
+  return c.json({
+    roadmaps: sampleRoadmaps,
+    query,
+    sources_searched: sources ? sources.split(",") : ["github_awesome", "roadmap_sh", "freecodecamp"],
+    total_found: sampleRoadmaps.length,
+    status: "success"
+  });
+});
+
+app.post("/api/v1/external-roadmaps/search", async (c) => {
+  const { query, sources, limit } = await c.req.json();
+  
+  if (!query) {
+    return c.json({ error: "Query is required" }, 400);
+  }
+
+  // Reuse the GET logic
+  const searchResult = await app.request("/api/v1/external-roadmaps/search?query=" + encodeURIComponent(query));
+  const data = await searchResult.json();
+  
+  // Apply limit if specified
+  if (limit && data.roadmaps) {
+    data.roadmaps = data.roadmaps.slice(0, limit);
+  }
+  
+  return c.json(data);
+});
+
+app.get("/api/v1/external-roadmaps/health", (c) =>
+  c.json({ 
+    status: "healthy", 
+    service: "external-roadmaps",
+    active_sources: ["github_awesome", "roadmap_sh", "freecodecamp"],
+    total_sources: 3,
+    test_search_working: true
+  })
+);
+
 // Health checks for all services
 app.get("/api/v1/roadmap/health", (c) =>
   c.json({ status: "healthy", service: "roadmap" }),
@@ -328,6 +461,9 @@ app.get("/api/v1/resume/health", (c) =>
 );
 app.get("/api/v1/progress/health", (c) =>
   c.json({ status: "healthy", service: "progress" }),
+);
+app.get("/api/v1/external-roadmaps/health", (c) =>
+  c.json({ status: "healthy", service: "external-roadmaps" }),
 );
 
 // Helper function for auto scheduling

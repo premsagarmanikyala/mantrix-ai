@@ -236,10 +236,19 @@ AWS_SECRET_ACCESS_KEY=your-aws-secret
 
 ### Roadmap Engine
 
-- Create personalized learning roadmaps
+- Create personalized learning roadmaps using AI
 - Skill level assessment
 - Time-based milestone planning
 - Resource recommendations
+
+### External Roadmap Integration
+
+- Access roadmaps from multiple open sources
+- GitHub Awesome Lists community curation
+- Roadmap.sh technology roadmaps
+- FreeCodeCamp curriculum paths
+- Unified search across platforms
+- Community-driven learning paths
 
 ## 📚 API Endpoints
 
@@ -263,6 +272,13 @@ AWS_SECRET_ACCESS_KEY=your-aws-secret
 
 - `POST /api/v1/resume/generate` - Generate resume
 - `POST /api/v1/roadmap/generate` - Generate roadmap
+
+### External Roadmaps
+
+- `GET /api/v1/external-roadmaps/sources` - Get available sources
+- `GET /api/v1/external-roadmaps/search` - Search external roadmaps
+- `POST /api/v1/external-roadmaps/search` - Search with request body
+- `GET /api/v1/external-roadmaps/health` - Service health check
 
 ## 🔒 Security
 
